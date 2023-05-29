@@ -23,7 +23,6 @@
     "js-cookie": "^2.2.1",
     "lint-staged": "^10.4.0",
     "lodash": "^4.17.20",
-    "node-sass": "^9.0.0",
     "prettier": "^2.1.2",
     "query-string": "^7.0.0",
     "react": "^16.13.1",
@@ -36,12 +35,13 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "3.4.3",
     "react-slick": "^0.28.1",
+    "sass": "^1.62.1",
     "slick-carousel": "^1.8.1",
     "socket.io-client": "2.4.0",
     "typescript": "^4.0.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build && rimraf dist && rename build dist && rename dist/index.html app.html",
     "server": "node server/index.js",
     "test": "react-scripts test",
