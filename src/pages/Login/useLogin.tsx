@@ -34,13 +34,9 @@ const useLogin = () => {
   const responseMessage = async (response: any) => {
     if (response?.credential) {
       const dataUser = jwt_decode(response.credential);
-      console.log(dataUser);
-
       if (dataUser) {
         try {
           const data = await loginWithGoogle(dataUser);
-          console.log(data);
-
           const { token } = data.data;
           Cookies.set('token', token, undefined);
           navigate('/');
