@@ -4,12 +4,16 @@ import 'antd/dist/antd.css';
 import 'styles/index.scss';
 import 'helper/i18n';
 import App from './App';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import * as serviceWorker from './serviceWorker';
+import configs from 'config';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <GoogleOAuthProvider clientId={configs.GOOGLE_CLIENT_ID || ''}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </GoogleOAuthProvider>,
   document.getElementById('root')
 );
 

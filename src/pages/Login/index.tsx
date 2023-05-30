@@ -1,37 +1,11 @@
 import React from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import _ from 'lodash';
 import styles from './style.module.scss';
 import { Card, Input, Button, Form, Row, Checkbox } from 'antd';
-import { useTranslation } from 'react-i18next';
-import { login } from 'api/authentication';
-import { handleErrorMessage } from 'helper';
+import { GoogleLogin } from '@react-oauth/google';
+import useLogin from './useLogin';
 
 export default function Login() {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-
-  const navigateToSignUp = () => navigate('/sign-up');
-  const handleSubmit = async (payload: any) => {
-    const params = _.pick(payload, ['username', 'password']);
-    try {
-      const data = await login(params);
-      const { token, refreshToken } = data.data;
-      Cookies.set('token', token, {
-        expires: payload.rememberMe ? 999999 : undefined,
-      });
-      Cookies.set('refreshToken', refreshToken, {
-        expires: payload.rememberMe ? 999999 : undefined,
-      });
-      navigate('/');
-    } catch (error) {
-      handleErrorMessage(error);
-    }
-  };
-
-  const isAuthenticated = !!Cookies.get('token');
-  if (isAuthenticated) return <Navigate to="/" />;
+  const { t, navigateToSignUp, handleSubmit, responseMessage, errorMessage } = useLogin();
 
   return (
     <div className={styles.loginContainer}>
@@ -82,6 +56,7 @@ export default function Login() {
             <p>Account: admin / 123456</p>
           </div>
         </Form>
+        <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
       </Card>
     </div>
   );
