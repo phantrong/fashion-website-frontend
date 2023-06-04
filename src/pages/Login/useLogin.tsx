@@ -5,12 +5,16 @@ import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import { useQueryClient } from 'react-query';
+import { USER_PROFILE } from 'constants/queryKey';
 
 const useLogin = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const navigateToSignUp = () => navigate('/sign-up');
+
   const handleSubmit = async (payload: any) => {
     const params = {
       username: payload.username,
@@ -18,13 +22,9 @@ const useLogin = () => {
     };
     try {
       const data = await login(params);
-      const { token, refreshToken } = data.data;
-      Cookies.set('token', token, {
-        expires: payload.rememberMe ? 999999 : undefined,
-      });
-      Cookies.set('refreshToken', refreshToken, {
-        expires: payload.rememberMe ? 999999 : undefined,
-      });
+      const { token, user } = data.data;
+      Cookies.set('token', token, undefined);
+      queryClient.setQueryData(USER_PROFILE, { data: user });
       navigate('/');
     } catch (error) {
       handleErrorMessage(error);
@@ -37,8 +37,9 @@ const useLogin = () => {
       if (dataUser) {
         try {
           const data = await loginWithGoogle(dataUser);
-          const { token } = data.data;
+          const { token, user } = data.data;
           Cookies.set('token', token, undefined);
+          queryClient.setQueryData(USER_PROFILE, { data: user });
           navigate('/');
         } catch (error) {
           handleErrorMessage(error);

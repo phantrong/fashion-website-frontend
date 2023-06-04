@@ -1,5 +1,4 @@
-import { sendGet, sendPut } from './axios';
+import { sendGet, sendPost } from './axios';
 
-// eslint-disable-next-line import/prefer-default-export
-export const loadProfile = () => sendGet('/v1/app/profile');
-export const updateProfile = () => sendPut('/v1/app/profile');
+export const getProfile = () => sendGet('/s2/profile');
+export const updateProfile = (params: any) => sendPost('/s2/profile/update', params);

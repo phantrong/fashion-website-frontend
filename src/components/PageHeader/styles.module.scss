@@ -11,28 +11,35 @@
 .menuWrapper {
   flex: 1;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
+
   :global {
     .ant-menu-item {
-      color: #fff;
-      background-color: #000;
+      color: #000;
+      background-color: #fff;
+
       a {
         font-size: 16px;
-        color: #fff;
+        color: #000;
       }
     }
-    .ant-menu-item-selected, .ant-menu-item-active {
-      background-color: #000 !important;
+
+    .ant-menu-item-selected,
+    .ant-menu-item-active {
+      background-color: #fff !important;
+
       a {
-        color: #A03BBA;
+        color: #1890ff;
       }
     }
   }
+
   .menuItem {
     padding: 10px;
     position: relative;
     cursor: pointer;
+
     .badge {
       position: absolute;
       top: 8px;
@@ -48,41 +55,75 @@
       background-color: #eb5757;
       border-radius: 50%;
     }
-    &:last-child img {
-      border-radius: 50%;
-      border: 1px solid #c4c4c4;
-      background: #3B3B3B;
-      padding: 8px;
-    }
+
     .dropdownToggle {
-      width: 160px;
+      width: auto;
       color: #3B3B3B;
       background: #EFEFEF;
       border-radius: 150px;
       padding: 2px 10px 2px 2px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       .userName {
         margin-left: 10px;
         font-weight: bold;
+        white-space: nowrap;
+      }
+
+      .icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1px solid #c4c4c4;
       }
     }
   }
 }
+
 .toggleSideBarButton {
   transform: translateX(5px);
   z-index: 1;
 }
+
 .logoHeader {
   padding-left: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+
+  img {
+    width: 32px;
+    height: 32px;
+  }
+
+  h1.appName {
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0 0 0 15px;
+  }
 }
-.menuContent {
-  margin-right: auto;
-  padding-left: 10px;
+
+.menuHeader {
+  width: 70%;
+  display: flex;
+
+  .menuContent {
+    margin-left: auto;
+    padding-right: 10px;
+  }
 }
+
 .isCollapsed {
   transform: translateX(405px);
   transition: all .3s;
 }
+
 @media only screen and (max-width: 992px) {
   .isCollapsed {
     transform: translateX(305px);

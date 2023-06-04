@@ -39,7 +39,7 @@ function App() {
           <RootWrapper />
         </Suspense>
       </CustomRouter>
-      {configs.APP_ENV !== 'prod' && <ReactQueryDevtools initialIsOpen={false} />}
+      {configs.APP_ENV !== 'prod' && <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />}
     </QueryClientProvider>
   );
 }

@@ -1,26 +1,25 @@
 import React, { Suspense } from 'react';
-// import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 import PageHeader from 'components/PageHeader';
-import SideNav from 'components/SideNav';
-import { /*Redirect, */ Outlet } from 'react-router-dom';
+// import SideNav from 'components/SideNav';
+import { Outlet, Navigate } from 'react-router-dom';
 import styles from './styles.module.scss';
-// import { useQuery } from 'react-query';
-// import { loadProfile } from 'api/profile';
+import { useQuery } from 'react-query';
+import { getProfile } from 'api/profile';
+import { USER_PROFILE } from 'constants/queryKey';
 
-export default function PageWrapper() {
-  // const isAuthenticated = !!Cookies.get('token');
-  // const { data: profile } = useQuery('profile', loadProfile, { enabled: isAuthenticated });
+export default function AuthWrapper() {
+  const isAuthenticated = !!Cookies.get('token');
+  const { data: profile } = useQuery(USER_PROFILE, getProfile, { enabled: isAuthenticated });
 
-  // if (!isAuthenticated) return <Redirect to="/login" />;
-  // if (!profile) return null;
+  if (!isAuthenticated) return <Navigate to="/login" />;
+  if (!profile) return null;
   return (
     <div className={styles.pageWrapper}>
-      <SideNav />
       <div className={styles.mainWrapper}>
         <PageHeader />
         <div className={styles.pageContent}>
-          {/* Header can be here */}
-          {/* <p>Header</p> */}
+          {/* <SideNav /> */}
           <Suspense fallback={null}>
             {/* Outlet is display as child route */}
             <Outlet />

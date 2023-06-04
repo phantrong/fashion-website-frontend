@@ -22,36 +22,16 @@ const logout = () => {
   Cookies.remove('refreshToken');
   history.push('/');
 };
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error: any) => {
-    const originalConfig = error.config;
     if (error.response.status !== 401) {
-      return Promise.reject(error);
-    }
-    const refreshToken = Cookies.get('refreshToken');
-    if (!refreshToken) {
-      logout();
-      return Promise.reject(error);
-    }
-    return Axios.post(`${configs.API_DOMAIN}/auth/request-access-token`, {
-      refreshToken,
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          const data = res.data.data;
-          Cookies.set('token', data.token);
-          originalConfig.headers.Authorization = `Bearer ${data.token}`;
-          return Axios(originalConfig);
-        } else {
-          logout();
-          return Promise.reject(error);
-        }
-      })
-      .catch(() => {
+      if (Cookies.get('token')) {
         logout();
-        return Promise.reject(error);
-      });
+      }
+    }
+    return Promise.reject(error);
   }
 );
 
