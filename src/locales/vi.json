@@ -2,12 +2,12 @@
   "common": {
     "login": "Đăng nhập",
     "signUp": "Đăng ký",
-    "username": "Tài khoản",
+    "email": "Email",
     "password": "Mật khẩu",
     "rememberMe": "Nhớ tài khoản"
   },
   "validate": {
-    "usernameRequired": "Vui lòng nhập tài khoản",
+    "emailRequired": "Vui lòng nhập email",
     "passwordRequired": "Vui lòng nhập mật khẩu"
   }
 }

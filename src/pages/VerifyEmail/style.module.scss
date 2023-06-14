@@ -1,4 +1,4 @@
-.signUpContainer {
+.verifyEmailContainer {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6,12 +6,14 @@
   min-height: 100vh;
 }
 
-.signUpForm {
+.verifyEmailForm {
   width: 420px;
   margin: 0 auto;
   box-shadow: grey 0px 0px 10px;
-}
 
-.datePicker {
-  width: 100%;
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }

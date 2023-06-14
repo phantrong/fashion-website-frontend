@@ -5,6 +5,13 @@ import { Router } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import configs from 'config';
+import { ConfigProvider } from 'antd';
+
+import moment from 'moment';
+import 'moment/locale/vi';
+import locale from 'antd/lib/locale/vi_VN';
+
+moment.locale('vi');
 
 export const history = createBrowserHistory();
 const queryClient = new QueryClient({
@@ -34,12 +41,14 @@ const CustomRouter: React.SFC<CustomRouterInterface> = ({ history, ...props }) =
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <CustomRouter history={history}>
-        <Suspense fallback={null}>
-          <RootWrapper />
-        </Suspense>
-      </CustomRouter>
-      {configs.APP_ENV !== 'prod' && <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />}
+      <ConfigProvider locale={locale}>
+        <CustomRouter history={history}>
+          <Suspense fallback={null}>
+            <RootWrapper />
+          </Suspense>
+        </CustomRouter>
+        {configs.APP_ENV !== 'prod' && <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />}
+      </ConfigProvider>
     </QueryClientProvider>
   );
 }

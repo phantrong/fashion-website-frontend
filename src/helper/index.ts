@@ -11,5 +11,5 @@ export const handleErrorMessage = (error: any) => {
 };
 
 export const getErrorMessage = (error: any) => {
-  return error?.response?.data?.errorMessage || 'Something went wrong!';
+  return error?.response?.data?.errorMessage || 'Lỗi hệ thống!';
 };

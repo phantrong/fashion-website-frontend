@@ -1,3 +1,4 @@
+import VerifyEmail from 'pages/VerifyEmail';
 import React, { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AuthWrapper from 'wrappers/AuthWrapper';
@@ -17,6 +18,7 @@ export default function AppWrapper() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/" element={<CommonWrapper />}>
           {/* Child route declaration */}
           <Route path="/" element={<HomePage />} />
