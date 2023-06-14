@@ -2,13 +2,15 @@
   height: 100vh;
   display: flex;
 }
+
 .mainWrapper {
   height: 100%;
   flex: 1;
 }
+
 .pageContent {
   flex: 1;
-  overflow: auto;
-  background: #fff;
-  height: calc(100vh - 65px);
+  // overflow: auto;
+  background: #fafafa;
+  // height: calc(100vh - 65px);
 }

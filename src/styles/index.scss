@@ -1,4 +1,18 @@
 // global style
 body {
-    font-family: "Roboto Regular", Roboto, Arial;
+  font-family: "Roboto Regular", Roboto, Arial;
+}
+
+$place-holder-color: #9f9ba5;
+
+.d-flex {
+  display: flex !important;
+}
+
+.align-center {
+  align-items: center !important;
+}
+
+.flex-column {
+  flex-direction: column !important;
 }

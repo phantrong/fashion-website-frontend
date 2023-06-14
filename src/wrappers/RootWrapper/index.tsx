@@ -11,6 +11,7 @@ const SearchRoom = lazy(() => import('pages/SearchRoom'));
 const RoomDetail = lazy(() => import('pages/RoomDetail'));
 const UserProfile = lazy(() => import('pages/UserProfile'));
 const UserHistoryView = lazy(() => import('pages/UserHistoryView'));
+const SavedRoom = lazy(() => import('pages/SavedRoom'));
 
 export default function AppWrapper() {
   return (
@@ -24,6 +25,7 @@ export default function AppWrapper() {
           <Route path="/" element={<HomePage />} />
           <Route path="/room/search" element={<SearchRoom />} />
           <Route path="/room/detail/:id" element={<RoomDetail />} />
+          <Route path="/room/saved" element={<SavedRoom />} />
         </Route>
         <Route path="/user" element={<AuthWrapper />}>
           {/* Child route declaration */}

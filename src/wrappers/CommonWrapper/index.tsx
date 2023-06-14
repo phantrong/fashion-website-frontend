@@ -10,7 +10,6 @@ export default function CommonWrapper() {
       <div className={styles.mainWrapper}>
         <PageHeader />
         <div className={styles.pageContent}>
-          {/* <SideNav /> */}
           <Suspense fallback={null}>
             {/* Outlet is display as child route */}
             <Outlet />

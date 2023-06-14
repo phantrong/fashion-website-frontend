@@ -1,0 +1,4 @@
+export enum EActionStore {
+  UPDATE_SAVED_ROOM = 'UPDATE_SAVED_ROOM',
+  UPDATE_ROOM_TYPE = 'UPDATE_ROOM_TYPE',
+}

@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
-import { Form, FormInstance, message } from 'antd';
+import { Form, message } from 'antd';
 import { sendContact } from 'api/contact';
+import { FormInstance } from 'antd/lib/form';
 
 export const COMMENT_TYPE = 1;
 export const COOPERATION_CONTACT_TYPE = 2;
