@@ -1,10 +1,15 @@
 import React from 'react';
+import { WrapperHome } from './style';
+import BannerHome from './Banner';
+import MainContentHome from './MainContent';
 
 const HomePage = () => {
   return (
-    <div>
-      <p>HomePage</p>
-    </div>
+    <WrapperHome>
+      <BannerHome />
+
+      <MainContentHome />
+    </WrapperHome>
   );
 };
 

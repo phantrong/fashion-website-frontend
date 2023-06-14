@@ -1,0 +1,100 @@
+import { Image } from 'antd';
+import {
+  InfoText,
+  TextAddress,
+  TimeText,
+  TittleStyle,
+  WrapperContent,
+  WrapperImage,
+  WrapperInfo,
+  WrapperLocation,
+  WrapperProductDetail,
+  WrapperTime,
+} from './style';
+import React, { useState } from 'react';
+import images from 'assets';
+import { EActionStore, IRoomListResponse } from 'types';
+import { calculateDaysToTargetDate, convertNumberToMoney } from 'helper/format';
+import { useNavigate } from 'react-router-dom';
+import { useMyContext } from 'stores';
+import { useSavedRoom } from 'services';
+
+interface IProductDetailProps extends IRoomListResponse {
+  lint?: boolean;
+}
+
+const ProductDetail: React.FC<IProductDetailProps> = ({ title, acreage, ...props }) => {
+  const { myContextValue, dispatch } = useMyContext();
+  const [isFavorite, setIsFavorite] = useState<boolean>(!!props?.is_interested);
+  const { deleteRoomInterested, saveRoomInterested } = useSavedRoom();
+  const navigate = useNavigate();
+
+  const clickTitle = (id: number) => {
+    navigate(`/room/detail/${id}`);
+  };
+
+  const handleAddToSavedRoom = () => {
+    const oldValue = myContextValue.isChangeSavedRooms;
+
+    const isSaved = props?.is_interested === 1;
+
+    if (isSaved) {
+      deleteRoomInterested(props?.id).then(() => {
+        dispatch({ type: EActionStore.UPDATE_SAVED_ROOM, payload: !oldValue });
+        setIsFavorite(!isFavorite);
+      });
+      return;
+    }
+    saveRoomInterested(props?.id).then(() => {
+      dispatch({ type: EActionStore.UPDATE_SAVED_ROOM, payload: !oldValue });
+      setIsFavorite(!isFavorite);
+    });
+  };
+
+  return (
+    <WrapperProductDetail className="d-flex flex-column">
+      <WrapperImage>
+        <Image
+          preview={false}
+          src="https://file4.batdongsan.com.vn/crop/393x222/2022/11/28/20221128130732-f494_wm.jpg"
+          alt="demo"
+        />
+      </WrapperImage>
+
+      <WrapperContent>
+        <TittleStyle onClick={() => clickTitle(props?.id)} title={title}>
+          {title?.toLocaleUpperCase()}
+        </TittleStyle>
+
+        <WrapperInfo className="d-flex">
+          <InfoText>
+            {props?.is_negotiate === 0 ? `${convertNumberToMoney(props?.cost)} triệu/tháng` : 'Giá thương lượng'}
+          </InfoText>
+
+          <InfoText>{acreage} m²</InfoText>
+        </WrapperInfo>
+
+        <WrapperLocation>
+          <Image height={24} width={14} preview={false} src={images.icons.LocationIcon} />
+          <TextAddress title={`${props?.district_name}, ${props?.province_name}`}>
+            {props?.district_name}, {props?.province_name}
+          </TextAddress>
+        </WrapperLocation>
+
+        <WrapperTime>
+          <TimeText>Đăng {Math.abs(calculateDaysToTargetDate(props?.updated_at))} ngày trước</TimeText>
+
+          <Image
+            onClick={handleAddToSavedRoom}
+            height={22}
+            width={18}
+            preview={false}
+            src={isFavorite ? images.icons.HeartRed : images.icons.HeartOutline}
+          />
+        </WrapperTime>
+      </WrapperContent>
+    </WrapperProductDetail>
+  );
+};
+
+export default ProductDetail;

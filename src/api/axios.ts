@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import Axios, { AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 import { history } from '../App';
 import configs from '../config';
@@ -11,7 +11,13 @@ const axiosInstance = Axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     // eslint-disable-next-line no-param-reassign
-    config.headers.Authorization = `Bearer ${Cookies.get('token')}`;
+    const token = Cookies.get('token');
+    const customerId = localStorage.getItem('customer_id');
+    if (!!token) {
+      config.headers.Authorization = `Bearer ${Cookies.get('token')}`;
+    }
+    config.headers['Customer-id'] = customerId;
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -35,9 +41,10 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export const sendGet = (url: string, params?: any) => axiosInstance.get(url, { params }).then((res) => res.data);
-export const sendPost = (url: string, params?: any, queryParams?: any) =>
-  axiosInstance.post(url, params, { params: queryParams }).then((res) => res.data);
+export const sendGet = (url: string, params?: any, config?: AxiosRequestConfig) =>
+  axiosInstance.get(url, { params, ...(config || {}) }).then((res) => res.data);
+export const sendPost = (url: string, params?: any, queryParams?: any, config?: AxiosRequestConfig) =>
+  axiosInstance.post(url, params, { params: queryParams, ...(config || {}) }).then((res) => res.data);
 export const sendPut = (url: string, params?: any) => axiosInstance.put(url, params).then((res) => res.data);
 export const sendPatch = (url: string, params?: any) => axiosInstance.patch(url, params).then((res) => res.data);
 export const sendDelete = (url: string, params?: any) => axiosInstance.delete(url, { params }).then((res) => res.data);

@@ -1,0 +1,4 @@
+const PLACEHOLDER_COLOR = '#9f9ba5';
+
+const MIN_WIDTH = '936px';
+export { PLACEHOLDER_COLOR, MIN_WIDTH };

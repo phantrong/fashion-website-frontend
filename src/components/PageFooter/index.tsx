@@ -8,9 +8,9 @@ import facebookIcon from 'assets/images/facebook.svg';
 import zaloIcon from 'assets/images/zalo.svg';
 
 import { Layout, Row, Col, Typography, Modal, Form, Input } from 'antd';
-import TextArea from 'antd/lib/input/TextArea';
 import usePageFooter, { COMMENT_TYPE, COOPERATION_CONTACT_TYPE } from './usePageFooter';
 import { REGEX_EMAIL } from 'helper/regex';
+import TextArea from 'antd/lib/input/TextArea';
 
 const { Footer } = Layout;
 const { Title, Text } = Typography;
@@ -86,12 +86,12 @@ const PageFooter = () => {
         <Col xs={24} sm={24} md={6}>
           <div className={styles.links}>
             <Text strong>LIÊN HỆ:</Text>
-            <Text className={styles.link} onClick={() => onOpenModal(COMMENT_TYPE)}>
+            <div className={styles.link} onClick={() => onOpenModal(COMMENT_TYPE)}>
               Đóng góp ý kiến
-            </Text>
-            <Text className={styles.link} onClick={() => onOpenModal(COOPERATION_CONTACT_TYPE)}>
+            </div>
+            <div className={styles.link} onClick={() => onOpenModal(COOPERATION_CONTACT_TYPE)}>
               Liên hệ hợp tác
-            </Text>
+            </div>
           </div>
         </Col>
       </Row>
@@ -144,7 +144,7 @@ const PageFooter = () => {
               placeholder={'Nội dung'}
               maxLength={1000}
               rows={5}
-              showCount
+              // showCount={true}
             />
           </Form.Item>
         </Form>

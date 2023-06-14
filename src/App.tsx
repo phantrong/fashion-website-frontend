@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useLayoutEffect } from 'react';
+import React, { Suspense, useState, useLayoutEffect, useEffect } from 'react';
 import { createBrowserHistory } from 'history';
 import RootWrapper from './wrappers/RootWrapper';
 import { Router } from 'react-router-dom';
@@ -10,8 +10,11 @@ import { ConfigProvider } from 'antd';
 import moment from 'moment';
 import 'moment/locale/vi';
 import locale from 'antd/lib/locale/vi_VN';
+import { v4 as uuidv4 } from 'uuid';
+import MyContextProvider from 'stores/provider';
 
 moment.locale('vi');
+const myUuid = uuidv4();
 
 export const history = createBrowserHistory();
 const queryClient = new QueryClient({
@@ -39,17 +42,24 @@ const CustomRouter: React.SFC<CustomRouterInterface> = ({ history, ...props }) =
 };
 
 function App() {
+  useEffect(() => {
+    const isHaveCustomerId = localStorage.getItem('customer_id');
+    if (!!isHaveCustomerId) return;
+    localStorage.setItem('customer_id', myUuid);
+  }, []);
   return (
-    <QueryClientProvider client={queryClient}>
-      <ConfigProvider locale={locale}>
-        <CustomRouter history={history}>
-          <Suspense fallback={null}>
-            <RootWrapper />
-          </Suspense>
-        </CustomRouter>
-        {configs.APP_ENV !== 'prod' && <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />}
-      </ConfigProvider>
-    </QueryClientProvider>
+    <MyContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <ConfigProvider locale={locale}>
+          <CustomRouter history={history}>
+            <Suspense fallback={null}>
+              <RootWrapper />
+            </Suspense>
+          </CustomRouter>
+          {configs.APP_ENV !== 'prod' && <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />}
+        </ConfigProvider>
+      </QueryClientProvider>
+    </MyContextProvider>
   );
 }
 
