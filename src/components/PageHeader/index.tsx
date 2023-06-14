@@ -39,15 +39,12 @@ export default function PageHeader() {
     },
   ];
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.log(error);
-    } finally {
+  const handleLogout = () => {
+    logout();
+    setTimeout(() => {
       Cookies.remove('token');
       navigate('/login');
-    }
+    }, 500);
   };
 
   const menu = (
