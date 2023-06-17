@@ -54,11 +54,7 @@ const ProductDetail: React.FC<IProductDetailProps> = ({ title, acreage, ...props
   return (
     <WrapperProductDetail className="d-flex flex-column">
       <WrapperImage>
-        <Image
-          preview={false}
-          src="https://file4.batdongsan.com.vn/crop/393x222/2022/11/28/20221128130732-f494_wm.jpg"
-          alt="demo"
-        />
+        <Image preview={false} src={props?.medias?.[0]?.link} alt={props?.medias?.[0]?.room_id + 'image'} />
       </WrapperImage>
 
       <WrapperContent>
@@ -87,7 +83,7 @@ const ProductDetail: React.FC<IProductDetailProps> = ({ title, acreage, ...props
           <Image
             onClick={handleAddToSavedRoom}
             height={22}
-            width={18}
+            width={isFavorite ? 19 : 18}
             preview={false}
             src={isFavorite ? images.icons.HeartRed : images.icons.HeartOutline}
           />

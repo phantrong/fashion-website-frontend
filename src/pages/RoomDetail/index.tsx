@@ -7,6 +7,7 @@ import {
   DescriptionTitle,
   HouseWareItem,
   NameStyle,
+  ProductSuggestDetail,
   TitleCity,
   TitleHouseWare,
   TitleStyle,
@@ -25,22 +26,47 @@ import {
 } from './style';
 import { Avatar, Image } from 'antd';
 import images from 'assets';
-import SwiperCustom from 'components/Swiper';
-import { IRoomDetailResponse, IRoomHouseWare } from 'types';
-import { useRoomService } from 'services';
+import { EActionStore, IRoomDetailResponse, IRoomHouseWare } from 'types';
+import { useRoomService, useSavedRoom } from 'services';
 import { useParams } from 'react-router-dom';
 import { convertNumberToMoney } from 'helper/format';
+import SwiperCustom from 'components/Swiper';
+import ProductSuggest from './ProductSuggest';
+import ProductRelated from './ProductRelated';
+import { SpaceStyle } from 'styles/styled';
+import { useMyContext } from 'stores';
 const RoomDetail = () => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const param = useParams();
-
+  const { myContextValue, dispatch } = useMyContext();
   const [room, setRoom] = useState<IRoomDetailResponse>();
-
+  const { deleteRoomInterested, saveRoomInterested } = useSavedRoom();
   const { getDetailRoom } = useRoomService();
 
   const handleGetDetailRoom = async () => {
     const result = await getDetailRoom((param as any)?.id);
+    console.log(result?.data?.is_interested);
+
+    setIsFavorite(result?.data?.is_interested === 1);
     setRoom(result?.data || {});
+  };
+
+  const handleAddToSavedRoom = () => {
+    const oldValue = myContextValue.isChangeSavedRooms;
+
+    const isSaved = room?.is_interested === 1;
+
+    if (isSaved) {
+      deleteRoomInterested(room?.id).then(() => {
+        dispatch({ type: EActionStore.UPDATE_SAVED_ROOM, payload: !oldValue });
+        setIsFavorite(!isFavorite);
+      });
+      return;
+    }
+    saveRoomInterested(room?.id || 0).then(() => {
+      dispatch({ type: EActionStore.UPDATE_SAVED_ROOM, payload: !oldValue });
+      setIsFavorite(!isFavorite);
+    });
   };
 
   const renderIconName = (name: string) => {
@@ -59,6 +85,7 @@ const RoomDetail = () => {
         <WrapperDetailSwiper>
           <SwiperCustom medias={room?.medias || []} />
         </WrapperDetailSwiper>
+        <SpaceStyle padding="10px 0" />
         <TitleStyle>{room?.title}</TitleStyle>
 
         <AddressText>{room?.address_detail}</AddressText>
@@ -82,9 +109,9 @@ const RoomDetail = () => {
           </WrapperRoomInfo>
 
           <Image
-            onClick={() => setIsFavorite(!isFavorite)}
+            onClick={handleAddToSavedRoom}
             height={22}
-            width={18}
+            width={19}
             preview={false}
             src={isFavorite ? images.icons.HeartRed : images.icons.HeartOutline}
           />
@@ -109,6 +136,16 @@ const RoomDetail = () => {
             ))}
           </WrapperHouseWare>
         </WrapperHouseWareInfo>
+
+        <ProductSuggestDetail>
+          <TitleHouseWare>Nhà trọ gợi ý cho bạn</TitleHouseWare>
+          <ProductSuggest />
+        </ProductSuggestDetail>
+
+        <ProductSuggestDetail>
+          <TitleHouseWare>Nhà trọ liên quan</TitleHouseWare>
+          {room && <ProductRelated roomId={room.id} />}
+        </ProductSuggestDetail>
       </WrapperBody>
 
       <WrapperSideBar>

@@ -35,6 +35,10 @@ export default function PageHeader() {
     const result = await getListRoomInterest();
     totalRecord.current = result?.data?.total || 0;
     setRooms(result?.data?.items || []);
+    dispatch({
+      type: EActionStore.UPDATE_SAVED_ROOM_ID,
+      payload: (result?.data?.items || []).map((item: IInterestedRoomListResponse) => item.room_id),
+    });
   };
 
   const handleGetRoomTye = async () => {
