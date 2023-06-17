@@ -11,9 +11,14 @@ const WrapperProductDetail = styled.div`
 const WrapperImage = styled.div`
   position: relative;
   border-radius: 5px 5px 0 0;
-
-  img {
-    border-radius: 5px 5px 0 0;
+  height: 127px;
+  .ant-image {
+    height: 100%;
+    width: 100%;
+    img {
+      height: 100%;
+      border-radius: 5px 5px 0 0;
+    }
   }
 `;
 
@@ -29,7 +34,8 @@ const TittleStyle = styled.h3`
   display: block;
   display: -webkit-box;
   max-width: 100%;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 550;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;

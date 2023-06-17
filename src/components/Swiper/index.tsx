@@ -10,6 +10,8 @@ import 'swiper/swiper.scss'; // core Swiper
 import 'swiper/modules/navigation/navigation.scss'; // Navigation module
 import 'swiper/modules/pagination/pagination.scss';
 import { IRoomMediaResponse } from 'types';
+import { Image } from 'antd';
+import { SpaceStyle } from 'styles/styled';
 
 interface ISwiperProps {
   medias: IRoomMediaResponse[];
@@ -27,16 +29,17 @@ const SwiperCustom: React.FC<ISwiperProps> = ({ medias }) => {
       >
         {medias?.map((item: IRoomMediaResponse) => (
           <SwiperSlide key={item?.id}>
-            <img src={item?.link} alt={'img' + item?.id} />
+            <Image preview src={item?.link} alt={'img' + item?.id} />
           </SwiperSlide>
         ))}
       </Swiper>
 
+      <SpaceStyle padding="5px" />
       <Swiper
         onSwiper={(swiper: any) => {
           setThumbsSwiper(swiper);
         }}
-        spaceBetween={10}
+        spaceBetween={20}
         slidesPerView={4}
         freeMode={true}
         watchSlidesProgress={true}
@@ -45,7 +48,7 @@ const SwiperCustom: React.FC<ISwiperProps> = ({ medias }) => {
       >
         {medias?.map((item: IRoomMediaResponse) => (
           <SwiperSlide key={item?.id}>
-            <img src={item?.link} alt={'img' + item?.id} />
+            <Image preview={false} src={item?.link} alt={'img' + item?.id} />
           </SwiperSlide>
         ))}
       </Swiper>

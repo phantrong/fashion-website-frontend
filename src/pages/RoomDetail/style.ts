@@ -10,6 +10,7 @@ const WrapperRoomDetail = styled.div`
   width: ${MIN_WIDTH};
   margin: auto;
   margin-top: 20px;
+  padding-bottom: 20px;
 `;
 
 const WrapperDetailSwiper = styled.div`
@@ -210,6 +211,10 @@ const WrapperCity = styled.div`
   margin-bottom: 16px;
   background-color: #f2f2f2;
 `;
+
+const ProductSuggestDetail = styled.div`
+  margin-top: 20px;
+`;
 export {
   WrapperRoomDetail,
   WrapperBody,
@@ -233,4 +238,5 @@ export {
   WrapperCity,
   TitleCity,
   WrapperDetailSwiper,
+  ProductSuggestDetail,
 };

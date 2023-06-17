@@ -8,14 +8,14 @@ import {
   WrapperSearch,
   WrapperSelect,
 } from './style';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import SearchCustom from 'components/Search';
 import { Image, Select } from 'antd';
 import { useAddressHook, useClientUrlHook } from 'hooks';
 import { useNavigate } from 'react-router-dom';
 import { useMyContext } from 'stores';
 import { IRoomTypeResponse } from 'types';
-import { AREAS_SELECT, COST_SELECT } from 'constants/filter';
+import { AREAS_SELECT, COST_SELECT, IFilterData } from 'constants/filter';
 import images from 'assets';
 import SelectCustom from 'components/Select';
 
@@ -47,7 +47,11 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
   const { myContextValue } = useMyContext();
   const { address, setAddressId } = useAddressHook();
   const [isOpenAddress, setIsOpenAddress] = useState<boolean>(false);
-
+  const [selectData, setSelectData] = useState<{
+    cost?: IFilterData & { valueApi: any };
+    area?: IFilterData & { valueApi: any };
+    roomType?: { value: number };
+  }>({ cost: undefined, area: undefined, roomType: { value: 0 } });
   const [currentAddress, setCurrentAddress] = useState<{ provinceId?: string; districtId?: string; wardId?: string }>({
     provinceId: undefined,
     wardId: undefined,
@@ -58,7 +62,21 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
   const [keyWord, setKeyWord] = useState<string>((getQueriesParams()?.key_word as string) || '');
 
   const handleSearch = (value: string) => {
-    const queries = convertObjectToQueryParam({ key_word: value });
+    const queries = convertObjectToQueryParam({
+      key_word: value,
+      room_type_id: selectData.roomType?.value,
+      ...(!!selectData.cost ? selectData.cost.valueApi : {}),
+      ...(!!selectData.area ? selectData.area.valueApi : {}),
+    });
+
+    const valueSearch = {
+      keyWord: value,
+      cost: selectData.cost,
+      area: selectData.area,
+      roomType: selectData.roomType,
+    };
+
+    localStorage.setItem('searchData', JSON.stringify(valueSearch));
 
     if (window.location.pathname.includes('room/search')) {
       const currentQueries = getQueriesParams();
@@ -77,9 +95,27 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
     setKeyWord(value);
   };
 
+  useEffect(() => {
+    if (window.location.pathname.includes('room/search')) {
+      const searchValue = JSON.parse(localStorage.getItem('searchData') || '{}');
+
+      setSelectData({ cost: searchValue?.cost, area: searchValue?.area, roomType: searchValue?.roomType });
+
+      setKeyWord(searchValue?.keyWord);
+      return;
+    }
+
+    localStorage.setItem('searchData', '{}');
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // ui
   const selectBefore = (
-    <Select defaultValue={0}>
+    <Select
+      value={selectData.roomType?.value}
+      onChange={(value, option) => handleChangeSelect(value, option, 'roomType')}
+    >
       <Option value={0}>Tất cả</Option>
       {myContextValue.roomTypes.map((item: IRoomTypeResponse) => (
         <Option title={item?.name} value={item?.id}>
@@ -193,11 +229,14 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
     return data?.map((item: any) => ({ ...item, label: item?.name, value: [item?.id, type].join('-') }));
   };
 
-  // useEffect(() => {
-  //   const isFullEmpty = [currentAddress.wardId, currentAddress.districtId, currentAddress.provinceId].filter((item) => !item);
-  //   setAddressSelectValue(isFullEmpty.length === 3 ? [] : [currentAddress.wardId, currentAddress.districtId, currentAddress.provinceId])
-  // }, [currentAddress])
+  const handleChangeSelect = (_value: any, options: any, key: 'cost' | 'area' | 'roomType') => {
+    setSelectData((prev) => ({ ...prev, [key]: options }));
+  };
 
+  const handleResetField = () => {
+    setKeyWord('');
+    setSelectData({ cost: undefined, area: undefined, roomType: { value: 0 } });
+  };
   return (
     <WrapperBannerStyle className="d-flex">
       <WrapperSearch className="d-flex flex-column">
@@ -234,15 +273,33 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
               ></SelectAddress>
             </WrapperItem>
             <WrapperItem>
-              <SelectCustom options={COST_SELECT} allowClear placeholder="Mức giá"></SelectCustom>
+              <SelectCustom
+                onChange={(value, options) => handleChangeSelect(value, options, 'cost')}
+                value={selectData.cost}
+                options={COST_SELECT}
+                allowClear
+                placeholder="Mức giá"
+              ></SelectCustom>
             </WrapperItem>
 
             <WrapperItem>
-              <SelectCustom allowClear options={AREAS_SELECT} placeholder="Diện tích"></SelectCustom>
+              <SelectCustom
+                onChange={(value, options) => handleChangeSelect(value, options, 'area')}
+                value={selectData.area}
+                allowClear
+                options={AREAS_SELECT}
+                placeholder="Diện tích"
+              ></SelectCustom>
             </WrapperItem>
 
             <IconSync>
-              <Image width={20} height={25} preview={false} src={images.icons.SyncWhiteIcon} />
+              <Image
+                onClick={handleResetField}
+                width={20}
+                height={25}
+                preview={false}
+                src={images.icons.SyncWhiteIcon}
+              />
             </IconSync>
           </WrapperSelect>
         </WrapperOverLay>
