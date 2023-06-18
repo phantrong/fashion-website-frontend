@@ -5,14 +5,18 @@ import { GoogleLogin } from '@react-oauth/google';
 import useLogin from './useLogin';
 import LoadingPage from 'components/LoadingPage';
 
+import logoHeader from 'assets/images/logo-header.svg';
+
 export default function Login() {
-  const { t, navigateToSignUp, handleSubmit, responseMessage, errorMessage, isLoadingSubmit } = useLogin();
+  const { t, navigateToSignUp, navigateToHome, handleSubmit, responseMessage, errorMessage, isLoadingSubmit } =
+    useLogin();
 
   return (
     <div className={styles.loginContainer}>
       <Card bordered className={styles.loginForm}>
         <Form onFinish={handleSubmit}>
-          <Row justify="center">
+          <Row justify="center" className={styles.titlePage} onClick={navigateToHome}>
+            <img src={logoHeader} alt="logo" />
             <h1>ThuePhongTro TTH</h1>
           </Row>
           <Row justify="center">

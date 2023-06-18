@@ -18,6 +18,7 @@ const useLogin = () => {
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 
   const navigateToSignUp = () => navigate('/sign-up');
+  const navigateToHome = () => navigate('/');
 
   const handleSubmit = async (payload: any) => {
     setIsLoadingSubmit(true);
@@ -72,6 +73,7 @@ const useLogin = () => {
   return {
     t,
     navigateToSignUp,
+    navigateToHome,
     handleSubmit,
     responseMessage,
     errorMessage,

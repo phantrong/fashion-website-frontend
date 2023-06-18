@@ -5,8 +5,26 @@
   padding: 50px 20px;
   min-height: 100vh;
 }
+
 .loginForm {
   width: 420px;
   margin: 0 auto;
   box-shadow: grey 0px 0px 10px;
+}
+
+.titlePage {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  cursor: pointer;
+
+  img {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+  }
+
+  h1 {
+    margin: 0;
+  }
 }
