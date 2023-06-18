@@ -7,14 +7,17 @@ import { RuleObject } from 'antd/lib/form';
 import { PASSWORD_MIN_LENGTH, USER_AGE_MIN } from 'constants/validate';
 import dayjs from 'dayjs';
 
+import logoHeader from 'assets/images/logo-header.svg';
+
 export default function SignUp() {
-  const { t, navigateToLogIn, handleSubmit, isLoadingSubmit } = useSignUp();
+  const { t, navigateToLogIn, navigateToHome, handleSubmit, isLoadingSubmit } = useSignUp();
 
   return (
     <div className={styles.signUpContainer}>
       <Card bordered className={styles.signUpForm}>
         <Form onFinish={handleSubmit}>
-          <Row justify="center">
+          <Row justify="center" className={styles.titlePage} onClick={navigateToHome}>
+            <img src={logoHeader} alt="logo" />
             <h1>ThuePhongTro TTH</h1>
           </Row>
           <Row justify="center">

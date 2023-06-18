@@ -12,6 +12,7 @@ const useSignUp = () => {
   const { t } = useTranslation();
 
   const navigateToLogIn = () => navigate('/login');
+  const navigateToHome = () => navigate('/');
 
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 
@@ -55,6 +56,7 @@ const useSignUp = () => {
   return {
     t,
     navigateToLogIn,
+    navigateToHome,
     handleSubmit,
     isLoadingSubmit,
   };

@@ -6,11 +6,20 @@
   box-shadow: inset 0px -0.5px 0px #D6D6D6;
   padding: 0 10px;
   color: #fff;
-
   position: sticky;
   top: 0;
   z-index: 5;
   background: white;
+}
+
+.menuHeader {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+
+  .menuContent {
+    padding-right: 10px;
+  }
 }
 
 .menuWrapper {
@@ -114,8 +123,6 @@
     margin: 0 0 0 15px;
   }
 }
-
-
 
 .isCollapsed {
   transform: translateX(405px);

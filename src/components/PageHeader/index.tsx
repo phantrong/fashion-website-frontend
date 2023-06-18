@@ -122,6 +122,8 @@ export default function PageHeader() {
         <div className={styles.logoHeader} onClick={() => navigate('/')}>
           <img src={logoHeader} alt="logo top" />
           <h1 className={styles.appName}>ThuePhongTro TTH</h1>
+        </div>
+        <div className={styles.menuHeader}>
           <Menu theme="light" mode="horizontal" className={styles.menuContent}>
             {authRoutes.map((route) => (
               <Menu.Item key={route.key}>
@@ -148,6 +150,7 @@ export default function PageHeader() {
           <ButtonCustom
             hover={{ border: 'none' }}
             style={{ background: 'transparent', border: 'none', padding: '13px 15px' }}
+            onClick={() => navigate('/login')}
           >
             Đăng nhập
           </ButtonCustom>
@@ -155,6 +158,7 @@ export default function PageHeader() {
           <ButtonCustom
             hover={{ border: 'none' }}
             style={{ background: 'transparent', border: 'none', padding: '13px 15px' }}
+            onClick={() => navigate('/register')}
           >
             Đăng ký
           </ButtonCustom>
