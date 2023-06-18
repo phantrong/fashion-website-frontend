@@ -44,4 +44,15 @@ const TextCountResult = styled.div`
   display: inline-block;
 `;
 
-export { WrapperMainContentSearchRoom, WrapperBody, WrapperSideBar, WrapperSearch, TextCountResult };
+const WrapperSeeMore = styled.div`
+  width: 100%;
+  display: flex;
+  padding-bottom: 20px;
+  justify-content: center;
+  button {
+    margin: auto;
+    padding: 10px 20px;
+  }
+`;
+
+export { WrapperSeeMore, WrapperMainContentSearchRoom, WrapperBody, WrapperSideBar, WrapperSearch, TextCountResult };

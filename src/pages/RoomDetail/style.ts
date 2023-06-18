@@ -15,6 +15,7 @@ const WrapperRoomDetail = styled.div`
 
 const WrapperDetailSwiper = styled.div`
   width: 100%;
+  height: 581px;
 `;
 
 const WrapperBody = styled.div`

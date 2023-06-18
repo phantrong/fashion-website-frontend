@@ -59,6 +59,7 @@ const useAddressHook = () => {
     address,
     setAddressId,
     addressId,
+    setAddress,
   };
 };
 

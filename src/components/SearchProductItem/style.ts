@@ -17,7 +17,7 @@ const WrapperImages = styled.div`
   margin-right: -4px;
 `;
 
-const MainImage = styled.img`
+const MainImage = styled.div`
   width: 70%;
   height: 100%;
   border-radius: 5px 0 0 0;
@@ -52,7 +52,7 @@ const WrapperSecondSubImage = styled.div`
   margin-left: -1px;
   margin-right: -1px;
 `;
-const SubImage = styled.img<{ width?: string; borderRadius?: string }>`
+const SubImage = styled.div<{ width?: string; borderRadius?: string }>`
   width: ${(props) => props?.width || '100%'};
   height: 100%;
   padding: 0 1px;

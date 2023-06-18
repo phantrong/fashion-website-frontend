@@ -18,6 +18,7 @@ const WrapperDetail = styled.div`
   margin-left: -15px;
   margin-right: -15px;
   flex-wrap: wrap;
+  width: 100%;
 `;
 
 const WrapperSeeMore = styled.div`

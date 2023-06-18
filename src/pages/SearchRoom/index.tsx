@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { WrapperSearchRoom } from './style';
 import BannerHome from 'pages/HomePage/Banner';
 import MainContentSearchRoom from './MainContent';
@@ -13,9 +13,13 @@ const SearchRoom = () => {
     order_by_created_at: ERoomStatusSort.DESC,
     ...getQueriesParams(),
   });
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rooms, setRooms] = useState<IRoomListResponse[]>([]);
-
+  const paginationRef = useRef<{ currentPage: number; total: number; pageSize: number }>({
+    currentPage: 1,
+    pageSize: 8,
+    total: 8,
+  });
   const { getListRoom } = useRoomService();
 
   const handleGetListRoom = (params: IRoomListRequest) => {
@@ -23,7 +27,15 @@ const SearchRoom = () => {
   };
 
   const setFirstData = async () => {
-    const result = await handleGetListRoom(params);
+    setIsLoading(true);
+    const result = await handleGetListRoom(params).finally(() => {
+      setIsLoading(false);
+    });
+    paginationRef.current = {
+      total: result?.data?.total,
+      pageSize: result?.data?.per_page,
+      currentPage: result?.data?.page,
+    };
     setRooms(result?.data?.rooms || []);
   };
 
@@ -47,7 +59,12 @@ const SearchRoom = () => {
   return (
     <WrapperSearchRoom>
       <BannerHome onListenQueries={updateParams} />
-      <MainContentSearchRoom rooms={rooms} onListenQueries={updateParams} />
+      <MainContentSearchRoom
+        pagination={paginationRef.current}
+        isLoading={isLoading}
+        rooms={rooms}
+        onListenQueries={updateParams}
+      />
     </WrapperSearchRoom>
   );
 };

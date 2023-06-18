@@ -18,6 +18,7 @@ import { IRoomTypeResponse } from 'types';
 import { AREAS_SELECT, COST_SELECT, IFilterData } from 'constants/filter';
 import images from 'assets';
 import SelectCustom from 'components/Select';
+import ButtonCustom from 'components/Button';
 
 interface IBannerHomeProps {
   onListenQueries?: (queries: any) => void;
@@ -30,22 +31,36 @@ const handleReturnValueAddressSelect = (obj: any) => {
 
   if (objValue.length === 0) return undefined;
 
-  return objValue?.reduce((objSelect: any, item: any) => {
+  const newObjSelect = objValue?.reduce((objSelect: any, item: any) => {
     if (!!item)
       return {
         ...objSelect,
         label: (objSelect?.label || '') + ',' + item?.label + ', ',
-        value: (objSelect?.id || '') + ',' + item?.id + '-',
+        value: objSelect?.value ? (objSelect?.value || '') + '-' + item?.id : item?.id,
       };
     return objSelect;
   }, {}) as { label: string; value: any };
+
+  if (!!newObjSelect?.label) {
+    const formatLabelArr = newObjSelect?.label.split(',');
+    const newLabel = formatLabelArr
+      .reduce((newArr: string[], value: string) => {
+        if (value === ' ' || value === '') return newArr;
+        return [...newArr, value];
+      }, [])
+      .reverse()
+      .join(', ');
+
+    return { ...newObjSelect, label: newLabel };
+  }
+  return newObjSelect;
 };
 
 const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
   const { convertObjectToQueryParam, getQueriesParams, changeUrlWithoutReload } = useClientUrlHook();
   const navigate = useNavigate();
   const { myContextValue } = useMyContext();
-  const { address, setAddressId } = useAddressHook();
+  const { address, setAddressId, setAddress } = useAddressHook();
   const [isOpenAddress, setIsOpenAddress] = useState<boolean>(false);
   const [selectData, setSelectData] = useState<{
     cost?: IFilterData & { valueApi: any };
@@ -62,32 +77,41 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
   const [keyWord, setKeyWord] = useState<string>((getQueriesParams()?.key_word as string) || '');
 
   const handleSearch = (value: string) => {
-    const queries = convertObjectToQueryParam({
+    const queriesObj = {
       key_word: value,
       room_type_id: selectData.roomType?.value,
       ...(!!selectData.cost ? selectData.cost.valueApi : {}),
       ...(!!selectData.area ? selectData.area.valueApi : {}),
-    });
+      ...{
+        province_id: currentAddress?.provinceId?.split('-')?.[0],
+        district_id: currentAddress?.districtId?.split('-')?.[0],
+        ward_id: currentAddress?.wardId?.split('-')?.[0],
+      },
+    };
 
     const valueSearch = {
       keyWord: value,
       cost: selectData.cost,
       area: selectData.area,
       roomType: selectData.roomType,
+      address,
+      currentAddress,
+      addressSelectArr,
+      addressSelectArrRef: addressSelectArrRef.current,
     };
 
     localStorage.setItem('searchData', JSON.stringify(valueSearch));
 
     if (window.location.pathname.includes('room/search')) {
       const currentQueries = getQueriesParams();
-      const newQueries = { ...currentQueries, key_word: value };
+      const newQueries = { ...currentQueries, ...queriesObj };
       changeUrlWithoutReload(`${window.location.pathname}?${convertObjectToQueryParam(newQueries)}`);
 
       onListenQueries?.(newQueries);
       return;
     }
 
-    navigate(`/room/search?${queries}`);
+    navigate(`/room/search?${convertObjectToQueryParam(queriesObj)}`);
   };
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,6 +124,10 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
       const searchValue = JSON.parse(localStorage.getItem('searchData') || '{}');
 
       setSelectData({ cost: searchValue?.cost, area: searchValue?.area, roomType: searchValue?.roomType });
+      setAddressSelectArr(searchValue?.addressSelectArr);
+      addressSelectArrRef.current = searchValue?.addressSelectArrRef;
+      setAddress(searchValue?.address);
+      setCurrentAddress(searchValue?.currentAddress);
 
       setKeyWord(searchValue?.keyWord);
       return;
@@ -140,7 +168,7 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
   // }
 
   const renderContentAddress = () => {
-    const handleChangeSelect = (id: string, key: 'provinceId' | 'districtId' | 'wardId', option: any) => {
+    const handleChangeSelect = (key: 'provinceId' | 'districtId' | 'wardId', id?: string, option?: any) => {
       const formatNumber = (_id: string) => {
         return _id?.split('-')?.[0] ? Number(_id?.split('-')?.[0]) : 0;
       };
@@ -155,7 +183,7 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
           };
           if (!!_option)
             addressObj = {
-              [key]: { ..._option, id: formatNumber(_option?.value) },
+              [key]: !!_option?.value ? { ..._option, id: formatNumber(_option?.value) } : undefined,
               districtId: undefined,
               wardId: undefined,
             };
@@ -166,14 +194,14 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
           };
           if (!!_option)
             addressObj = {
-              [key]: { ..._option, id: formatNumber(_option?.value) },
+              [key]: !!_option?.value ? { ..._option, id: formatNumber(_option?.value) } : undefined,
               wardId: undefined,
             };
         } else {
           newObj = { [key]: value };
           if (!!_option)
             addressObj = {
-              [key]: { ..._option, id: formatNumber(_option?.value) },
+              [key]: !!_option?.value ? { ..._option, id: formatNumber(_option?.value) } : undefined,
             };
         }
 
@@ -191,32 +219,49 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
 
       setCurrentAddress((prev) => ({ ...prev, ...result[0] }));
 
-      setAddressId((prev) => ({ ...prev, ...handleCreateObj(formatNumber(id), key) }));
+      setAddressId((prev) => ({ ...prev, ...handleCreateObj(formatNumber(id || '0'), key) }));
     };
     return (
       <WrapperAddressSelect>
         <h3>Khu vực</h3>
         <Select
-          onChange={(id: string, option: any) => handleChangeSelect(id, 'provinceId', option)}
-          value={currentAddress.provinceId as any}
+          onChange={(id: string, option: any) => handleChangeSelect('provinceId', id, option)}
+          value={currentAddress?.provinceId as any}
           options={formatDataSelect(address?.provinces, 'p')}
           allowClear
+          onClear={() => {
+            setAddress((prev) => ({ ...prev, districts: [], wards: [] }));
+            handleChangeSelect('provinceId', undefined, {});
+          }}
           placeholder="Tỉnh"
         ></Select>
         <Select
-          onChange={(id: string, option: any) => handleChangeSelect(id, 'districtId', option)}
-          value={currentAddress.districtId}
+          onChange={(id: string, option: any) => handleChangeSelect('districtId', id, option)}
+          value={currentAddress?.districtId}
           options={formatDataSelect(address?.districts, 'd')}
           allowClear
+          onClear={() => {
+            setAddress((prev) => ({ ...prev, wards: [] }));
+            handleChangeSelect('districtId', undefined, {});
+          }}
           placeholder="Quận/huyện"
         ></Select>
         <Select
-          onChange={(id: string, option: any) => handleChangeSelect(id, 'wardId', option)}
-          value={currentAddress.wardId}
+          onClear={() => handleChangeSelect('wardId', undefined, {})}
+          onChange={(id: string, option: any) => handleChangeSelect('wardId', id, option)}
+          value={currentAddress?.wardId}
           options={formatDataSelect(address?.wards, 'w')}
           allowClear
           placeholder="Phường/xã"
         ></Select>
+
+        <ButtonCustom
+          onClick={() => setIsOpenAddress(false)}
+          hover={{ background: 'rgba(0,0,0,0.5)', color: 'white' }}
+          style={{ background: 'rgba(0,0,0,0.6)', color: 'white', padding: '2px 10px' }}
+        >
+          Đóng
+        </ButtonCustom>
       </WrapperAddressSelect>
     );
   };
@@ -265,7 +310,6 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
                 value={addressSelectArr?.[0]?.value}
                 options={addressSelectArr}
                 tagRender={tagRender}
-                mode="multiple"
                 placeholder="Trên toàn quốc"
                 dropdownRender={(menu) => {
                   return <>{renderContentAddress()}</>;

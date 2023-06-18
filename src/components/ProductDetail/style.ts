@@ -12,7 +12,7 @@ const WrapperImage = styled.div`
   position: relative;
   border-radius: 5px 5px 0 0;
   height: 127px;
-  .ant-image {
+  .image-error-component {
     height: 100%;
     width: 100%;
     img {

@@ -10,14 +10,25 @@ import 'swiper/swiper.scss'; // core Swiper
 import 'swiper/modules/navigation/navigation.scss'; // Navigation module
 import 'swiper/modules/pagination/pagination.scss';
 import { IRoomMediaResponse } from 'types';
-import { Image } from 'antd';
 import { SpaceStyle } from 'styles/styled';
+import ImageError from 'components/ImageError';
 
 interface ISwiperProps {
   medias: IRoomMediaResponse[];
+  isLoading?: boolean;
 }
-const SwiperCustom: React.FC<ISwiperProps> = ({ medias }) => {
+const SwiperCustom: React.FC<ISwiperProps> = ({ medias, isLoading }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
+  const renderSkeleton = () => {
+    return new Array(5).fill(0).map((item, index) => {
+      return (
+        <SwiperSlide key={index}>
+          <ImageError isLoading={true} preview src={item?.link} alt={'img' + index} />
+        </SwiperSlide>
+      );
+    });
+  };
   return (
     <WrapperSwiper className="demo">
       <Swiper
@@ -27,11 +38,13 @@ const SwiperCustom: React.FC<ISwiperProps> = ({ medias }) => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper2"
       >
-        {medias?.map((item: IRoomMediaResponse) => (
-          <SwiperSlide key={item?.id}>
-            <Image preview src={item?.link} alt={'img' + item?.id} />
-          </SwiperSlide>
-        ))}
+        {isLoading
+          ? renderSkeleton()
+          : medias?.map((item: IRoomMediaResponse) => (
+              <SwiperSlide key={item?.id}>
+                <ImageError preview src={item?.link} alt={'img' + item?.id} />
+              </SwiperSlide>
+            ))}
       </Swiper>
 
       <SpaceStyle padding="5px" />
@@ -46,11 +59,13 @@ const SwiperCustom: React.FC<ISwiperProps> = ({ medias }) => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper"
       >
-        {medias?.map((item: IRoomMediaResponse) => (
-          <SwiperSlide key={item?.id}>
-            <Image preview={false} src={item?.link} alt={'img' + item?.id} />
-          </SwiperSlide>
-        ))}
+        {isLoading
+          ? renderSkeleton()
+          : medias?.map((item: IRoomMediaResponse) => (
+              <SwiperSlide key={item?.id}>
+                <ImageError preview={false} src={item?.link} alt={'img' + item?.id} />
+              </SwiperSlide>
+            ))}
       </Swiper>
     </WrapperSwiper>
   );

@@ -8,6 +8,7 @@ import BellIcon from 'assets/icons/bell.svg';
 import CloseIcon from 'assets/icons/close.svg';
 import SyncIcon from 'assets/icons/sync.svg';
 import SyncWhiteIcon from 'assets/icons/sync-white.svg';
+import DefaultImage from 'assets/icons/default.svg';
 
 const icons = {
   LocationIcon,
@@ -20,6 +21,7 @@ const icons = {
   CloseIcon,
   SyncIcon,
   SyncWhiteIcon,
+  DefaultImage,
 };
 
 const images = {

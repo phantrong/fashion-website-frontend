@@ -35,6 +35,7 @@ import ProductSuggest from './ProductSuggest';
 import ProductRelated from './ProductRelated';
 import { SpaceStyle } from 'styles/styled';
 import { useMyContext } from 'stores';
+import WrapperLoading from 'components/WrapperLoading';
 const RoomDetail = () => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const param = useParams();
@@ -42,10 +43,13 @@ const RoomDetail = () => {
   const [room, setRoom] = useState<IRoomDetailResponse>();
   const { deleteRoomInterested, saveRoomInterested } = useSavedRoom();
   const { getDetailRoom } = useRoomService();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleGetDetailRoom = async () => {
-    const result = await getDetailRoom((param as any)?.id);
-    console.log(result?.data?.is_interested);
+    setIsLoading(true);
+    const result = await getDetailRoom((param as any)?.id).finally(() => {
+      setIsLoading(false);
+    });
 
     setIsFavorite(result?.data?.is_interested === 1);
     setRoom(result?.data || {});
@@ -83,68 +87,79 @@ const RoomDetail = () => {
     <WrapperRoomDetail>
       <WrapperBody>
         <WrapperDetailSwiper>
-          <SwiperCustom medias={room?.medias || []} />
+          <SwiperCustom isLoading={isLoading} medias={room?.medias || []} />
         </WrapperDetailSwiper>
         <SpaceStyle padding="10px 0" />
-        <TitleStyle>{room?.title}</TitleStyle>
 
-        <AddressText>{room?.address_detail}</AddressText>
+        <WrapperLoading isLoading={isLoading}>
+          <TitleStyle>{room?.title}</TitleStyle>
 
-        <WrapperInfo>
-          <WrapperRoomInfo>
-            <WrapperRoomInfoItem>
-              <span>Mức giá</span>
-              <span>{room?.is_negotiate === 1 ? 'Thỏa thuận' : convertNumberToMoney(room?.cost || 0) + ' triệu'}</span>
-            </WrapperRoomInfoItem>
+          <AddressText>{room?.address_detail}</AddressText>
 
-            <WrapperRoomInfoItem>
-              <span>Diện tích</span>
-              <span>{room?.acreage} m²</span>
-            </WrapperRoomInfoItem>
+          <WrapperInfo>
+            <WrapperRoomInfo>
+              <WrapperRoomInfoItem>
+                <span>Mức giá</span>
+                <span>
+                  {room?.is_negotiate === 1 ? 'Thỏa thuận' : convertNumberToMoney(room?.cost || 0) + ' triệu'}
+                </span>
+              </WrapperRoomInfoItem>
 
-            {/* <WrapperRoomInfoItem>
-              <span>Phòng ngủ</span>
-              <span>3 PN</span>
-            </WrapperRoomInfoItem> */}
-          </WrapperRoomInfo>
+              <WrapperRoomInfoItem>
+                <span>Diện tích</span>
+                <span>{room?.acreage} m²</span>
+              </WrapperRoomInfoItem>
 
-          <Image
-            onClick={handleAddToSavedRoom}
-            height={22}
-            width={19}
-            preview={false}
-            src={isFavorite ? images.icons.HeartRed : images.icons.HeartOutline}
-          />
-        </WrapperInfo>
+              {/* <WrapperRoomInfoItem>
+      <span>Phòng ngủ</span>
+      <span>3 PN</span>
+    </WrapperRoomInfoItem> */}
+            </WrapperRoomInfo>
 
-        <WrapperDescription>
-          <DescriptionTitle>Thông tin mô tả</DescriptionTitle>
-          <p>34m² - 2 tầng - hẻm 5m.</p>
+            <Image
+              onClick={handleAddToSavedRoom}
+              height={22}
+              width={19}
+              preview={false}
+              src={isFavorite ? images.icons.HeartRed : images.icons.HeartOutline}
+            />
+          </WrapperInfo>
+        </WrapperLoading>
 
-          <p>Lê Quang Định - P5 - Bình Thạnh.</p>
+        <WrapperLoading isLoading={isLoading}>
+          <WrapperDescription>
+            <DescriptionTitle>Thông tin mô tả</DescriptionTitle>
+            <p>34m² - 2 tầng - hẻm 5m.</p>
 
-          <p>Nhà 3 phòng ngủ, 3 toilet, hẻm dân trí, an.</p>
-          <p> Ninh, cách mặt tiền chỉ 25m, pháp lý chuẩn.</p>
-          <p> Không lộ giới, hoàn công đầy đủ.</p>
-        </WrapperDescription>
+            <p>Lê Quang Định - P5 - Bình Thạnh.</p>
+
+            <p>Nhà 3 phòng ngủ, 3 toilet, hẻm dân trí, an.</p>
+            <p> Ninh, cách mặt tiền chỉ 25m, pháp lý chuẩn.</p>
+            <p> Không lộ giới, hoàn công đầy đủ.</p>
+          </WrapperDescription>
+        </WrapperLoading>
 
         <WrapperHouseWareInfo>
           <TitleHouseWare>Các đồ dùng có sẵn</TitleHouseWare>
           <WrapperHouseWare>
-            {room?.housewares?.map((item: IRoomHouseWare) => (
-              <HouseWareItem key={item?.id}>{item?.name}</HouseWareItem>
-            ))}
+            <WrapperLoading isLoading={isLoading}>
+              {room?.housewares?.map((item: IRoomHouseWare) => (
+                <HouseWareItem key={item?.id}>{item?.name}</HouseWareItem>
+              ))}
+            </WrapperLoading>
           </WrapperHouseWare>
         </WrapperHouseWareInfo>
 
         <ProductSuggestDetail>
           <TitleHouseWare>Nhà trọ gợi ý cho bạn</TitleHouseWare>
-          <ProductSuggest />
+          <WrapperLoading isLoading={isLoading}>
+            <ProductSuggest />
+          </WrapperLoading>
         </ProductSuggestDetail>
 
         <ProductSuggestDetail>
           <TitleHouseWare>Nhà trọ liên quan</TitleHouseWare>
-          {room && <ProductRelated roomId={room.id} />}
+          <WrapperLoading isLoading={isLoading}>{room && <ProductRelated roomId={room.id} />}</WrapperLoading>
         </ProductSuggestDetail>
       </WrapperBody>
 

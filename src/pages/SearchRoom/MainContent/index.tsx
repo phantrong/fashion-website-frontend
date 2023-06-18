@@ -1,6 +1,13 @@
-import { Image, Select, Switch } from 'antd';
-import { TextCountResult, WrapperBody, WrapperMainContentSearchRoom, WrapperSearch, WrapperSideBar } from './style';
-import React from 'react';
+import { Image, Pagination, Select, Switch } from 'antd';
+import {
+  TextCountResult,
+  WrapperBody,
+  WrapperMainContentSearchRoom,
+  WrapperSearch,
+  WrapperSeeMore,
+  WrapperSideBar,
+} from './style';
+import React, { useState } from 'react';
 import { SpaceStyle } from 'styles/styled';
 import SearchProductItem from 'components/SearchProductItem';
 import {
@@ -13,6 +20,7 @@ import {
 import images from 'assets';
 import { ERoomStatusSort, IRoomListResponse } from 'types';
 import { AREAS, COSTS, IFilterData } from 'constants/filter';
+import ButtonCustom from 'components/Button';
 
 const search = [
   {
@@ -35,14 +43,20 @@ const search = [
 interface IMainContentSearchPageProps {
   rooms: IRoomListResponse[];
   onListenQueries?: (value: any) => void;
-  totalResult?: number;
+  pagination: { currentPage: number; total: number; pageSize: number };
+  isLoading?: boolean;
 }
 
-const MainContentSearchRoom: React.FC<IMainContentSearchPageProps> = ({ rooms, onListenQueries }) => {
+const MainContentSearchRoom: React.FC<IMainContentSearchPageProps> = ({
+  rooms,
+  onListenQueries,
+  isLoading,
+  pagination,
+}) => {
   const renderSearch = () => {
     return (
       <WrapperSearch>
-        <TextCountResult>Hiện có 17,577 nhà trọ.</TextCountResult>
+        <TextCountResult>Hiện có {pagination.total} nhà trọ.</TextCountResult>
 
         <Select
           onChange={(_value: any, options: any) => {
@@ -80,18 +94,43 @@ const MainContentSearchRoom: React.FC<IMainContentSearchPageProps> = ({ rooms, o
     );
   };
 
+  const renderSkeleton = () => {
+    return new Array(10).fill(0).map((item: any, index: number) => {
+      return (
+        <React.Fragment key={index}>
+          <SearchProductItem isLoading={true} {...(item || {})} />
+          <SpaceStyle padding="10px" />
+        </React.Fragment>
+      );
+    });
+  };
+
   return (
     <WrapperMainContentSearchRoom>
       <WrapperBody>
         {renderSearch()}
         <SpaceStyle padding="5px" />
 
-        {(rooms || [])?.map((item: IRoomListResponse) => (
-          <React.Fragment key={item?.id}>
-            <SearchProductItem {...item} />
-            <SpaceStyle padding="10px" />
-          </React.Fragment>
-        ))}
+        {isLoading
+          ? renderSkeleton()
+          : (rooms || [])?.map((item: IRoomListResponse) => (
+              <React.Fragment key={item?.id}>
+                <SearchProductItem {...item} />
+                <SpaceStyle padding="10px" />
+              </React.Fragment>
+            ))}
+
+        <WrapperSeeMore>
+          <Pagination
+            onChange={(page: number) => {
+              onListenQueries?.({ page });
+              window.scrollTo(0, 300);
+            }}
+            current={pagination.currentPage}
+            pageSize={pagination.pageSize}
+            total={pagination.total}
+          />
+        </WrapperSeeMore>
       </WrapperBody>
 
       <WrapperSideBar>

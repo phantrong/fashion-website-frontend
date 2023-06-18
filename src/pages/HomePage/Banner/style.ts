@@ -40,7 +40,7 @@ const WrapperOverLay = styled.div`
     background: #e03c31;
     border-color: transparent;
     &:hover {
-      background: #ff837a !important;
+      /* background: #ff837a !important; */
       border-color: transparent;
     }
   }
@@ -76,6 +76,12 @@ const WrapperItem = styled.div<{ maxWidth?: string }>`
     }
     .ant-select-arrow {
       color: white;
+    }
+    .ant-select-clear {
+      background: #000c1e;
+      svg {
+        color: aliceblue;
+      }
     }
   }
 `;
@@ -130,6 +136,12 @@ const WrapperAddressSelect = styled.div`
     .ant-select-arrow {
       color: #999;
     }
+    .ant-select-clear {
+      background: #fff;
+      svg {
+        color: unset;
+      }
+    }
   }
 `;
 
@@ -142,25 +154,24 @@ const IconSync = styled.div`
 
 const SelectAddress = styled(SelectCustom)`
   .ant-select-selection-item {
-    margin: unset !important;
-    background: transparent;
-    border: none;
-    height: 100%;
-    display: flex;
-    align-items: center;
+    display: block;
+    display: -webkit-box;
+    max-width: 100%;
+    font-size: 14px;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: break-spaces;
   }
 
   .ant-select-selector {
     max-height: 30px !important;
-    span:nth-child(1) {
-      display: block;
-      display: -webkit-box;
-      max-width: 100%;
-      font-size: 14px;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .ant-select-clear {
+      background: #000c1e;
+      svg {
+        color: aliceblue;
+      }
     }
   }
 `;

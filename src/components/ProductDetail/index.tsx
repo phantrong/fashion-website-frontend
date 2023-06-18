@@ -1,4 +1,4 @@
-import { Image } from 'antd';
+import { Image, Skeleton } from 'antd';
 import {
   InfoText,
   TextAddress,
@@ -18,12 +18,15 @@ import { calculateDaysToTargetDate, convertNumberToMoney } from 'helper/format';
 import { useNavigate } from 'react-router-dom';
 import { useMyContext } from 'stores';
 import { useSavedRoom } from 'services';
+import WrapperLoading from 'components/WrapperLoading';
+import ImageError from 'components/ImageError';
 
 interface IProductDetailProps extends IRoomListResponse {
   lint?: boolean;
+  isLoading?: boolean;
 }
 
-const ProductDetail: React.FC<IProductDetailProps> = ({ title, acreage, ...props }) => {
+const ProductDetail: React.FC<IProductDetailProps> = ({ title, acreage, isLoading, ...props }) => {
   const { myContextValue, dispatch } = useMyContext();
   const [isFavorite, setIsFavorite] = useState<boolean>(!!props?.is_interested);
   const { deleteRoomInterested, saveRoomInterested } = useSavedRoom();
@@ -54,41 +57,48 @@ const ProductDetail: React.FC<IProductDetailProps> = ({ title, acreage, ...props
   return (
     <WrapperProductDetail className="d-flex flex-column">
       <WrapperImage>
-        <Image preview={false} src={props?.medias?.[0]?.link} alt={props?.medias?.[0]?.room_id + 'image'} />
+        <ImageError
+          isLoading={isLoading}
+          preview={false}
+          src={props?.medias?.[0]?.link}
+          alt={props?.medias?.[0]?.room_id + 'image'}
+        />
       </WrapperImage>
 
-      <WrapperContent>
-        <TittleStyle onClick={() => clickTitle(props?.id)} title={title}>
-          {title?.toLocaleUpperCase()}
-        </TittleStyle>
+      <WrapperLoading isLoading={isLoading || false}>
+        <WrapperContent>
+          <TittleStyle onClick={() => clickTitle(props?.id)} title={title}>
+            {title?.toLocaleUpperCase()}
+          </TittleStyle>
 
-        <WrapperInfo className="d-flex">
-          <InfoText>
-            {props?.is_negotiate === 0 ? `${convertNumberToMoney(props?.cost)} triệu/tháng` : 'Giá thương lượng'}
-          </InfoText>
+          <WrapperInfo className="d-flex">
+            <InfoText>
+              {props?.is_negotiate === 0 ? `${convertNumberToMoney(props?.cost)} triệu/tháng` : 'Giá thương lượng'}
+            </InfoText>
 
-          <InfoText>{acreage} m²</InfoText>
-        </WrapperInfo>
+            <InfoText>{acreage} m²</InfoText>
+          </WrapperInfo>
 
-        <WrapperLocation>
-          <Image height={24} width={14} preview={false} src={images.icons.LocationIcon} />
-          <TextAddress title={`${props?.district_name}, ${props?.province_name}`}>
-            {props?.district_name}, {props?.province_name}
-          </TextAddress>
-        </WrapperLocation>
+          <WrapperLocation>
+            <Image height={24} width={14} preview={false} src={images.icons.LocationIcon} />
+            <TextAddress title={`${props?.district_name}, ${props?.province_name}`}>
+              {props?.district_name}, {props?.province_name}
+            </TextAddress>
+          </WrapperLocation>
 
-        <WrapperTime>
-          <TimeText>Đăng {Math.abs(calculateDaysToTargetDate(props?.updated_at))} ngày trước</TimeText>
+          <WrapperTime>
+            <TimeText>Đăng {Math.abs(calculateDaysToTargetDate(props?.updated_at))} ngày trước</TimeText>
 
-          <Image
-            onClick={handleAddToSavedRoom}
-            height={22}
-            width={isFavorite ? 19 : 18}
-            preview={false}
-            src={isFavorite ? images.icons.HeartRed : images.icons.HeartOutline}
-          />
-        </WrapperTime>
-      </WrapperContent>
+            <Image
+              onClick={handleAddToSavedRoom}
+              height={22}
+              width={isFavorite ? 19 : 18}
+              preview={false}
+              src={isFavorite ? images.icons.HeartRed : images.icons.HeartOutline}
+            />
+          </WrapperTime>
+        </WrapperContent>
+      </WrapperLoading>
     </WrapperProductDetail>
   );
 };

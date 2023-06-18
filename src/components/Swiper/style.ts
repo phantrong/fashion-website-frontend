@@ -2,6 +2,16 @@ import { styled } from 'styled-components';
 
 const WrapperSwiper = styled.div`
   width: 100%;
+  .mySwiper2 {
+    .swiper-slide {
+      height: 464px;
+    }
+  }
+  .mySwiper {
+    .swiper-slide {
+      height: 106px;
+    }
+  }
   .swiper {
     width: 100%;
     height: 100%;
