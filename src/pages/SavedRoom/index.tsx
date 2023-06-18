@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import BannerHome from 'pages/HomePage/Banner';
 import { TitleStyle, WrapperBody, WrapperMainContent, WrapperSavedRoom, WrapperSearch } from './styled';
-import { ERoomStatusSort, IRoomListResponse } from 'types';
-import SearchProductItem from 'components/SearchProductItem';
+import { ERoomStatusSort, IInterestedRoomListResponse } from 'types';
 import { SpaceStyle } from 'styles/styled';
 import { useSavedRoom } from 'services';
 import { IInterestedRoomRequest } from 'types/interested-room';
 import { Select } from 'antd';
+import InterestedRoomItem from 'components/InterestedRoomItem';
 
 const search = [
   {
@@ -34,7 +34,7 @@ const SavedRoom = () => {
     per_page: 10,
     order_by_created_at: ERoomStatusSort.DESC,
   });
-  const [rooms, setRooms] = useState<IRoomListResponse[]>([]);
+  const [rooms, setRooms] = useState<IInterestedRoomListResponse[]>([]);
 
   const { getListDetailInterestedRoom } = useSavedRoom();
 
@@ -61,8 +61,8 @@ const SavedRoom = () => {
     );
   };
 
-  const handleRemoveRoom = (_status: boolean, room: IRoomListResponse) => {
-    setRooms((prev) => prev.filter((item: IRoomListResponse) => item?.id !== room?.id));
+  const handleRemoveRoom = (_status: boolean, room: IInterestedRoomListResponse) => {
+    setRooms((prev) => prev.filter((item: IInterestedRoomListResponse) => item?.room_id !== room?.room_id));
   };
 
   useEffect(() => {
@@ -76,11 +76,11 @@ const SavedRoom = () => {
 
       <WrapperMainContent>
         <WrapperBody>
-          <TitleStyle>Nhà trọ đã lưu</TitleStyle>
+          <TitleStyle>Nhà trọ đang quan tâm</TitleStyle>
           {renderSearch()}
-          {(rooms || [])?.map((item: IRoomListResponse) => (
-            <React.Fragment key={item?.id}>
-              <SearchProductItem {...item} onSuccessClickSave={handleRemoveRoom} />
+          {(rooms || [])?.map((item: IInterestedRoomListResponse) => (
+            <React.Fragment key={item?.room_id}>
+              <InterestedRoomItem {...item} onSuccessClickSave={handleRemoveRoom} />
               <SpaceStyle padding="10px" />
             </React.Fragment>
           ))}

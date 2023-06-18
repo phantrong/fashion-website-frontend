@@ -21,13 +21,13 @@ const SaveRoomHeader: React.FC<ISaveRoomHeaderProps> = ({ rooms, onClickClose })
 
   return (
     <WrapperSaveRoom>
-      <WrapperTitle>Tin đăng đã lưu</WrapperTitle>
+      <WrapperTitle>Danh sách trọ quan tâm</WrapperTitle>
 
       <WrapperContent>
         {rooms.length > 0 ? (
           rooms.map((item: IInterestedRoomListResponse) => (
             <WrapperRoomSaveItem key={item?.item_id} onClick={() => navigate(`/room/detail/${item?.item_id}`)}>
-              <Image width={64} height={48} preview={false} src={item?.room?.first_image?.[0]?.link} />
+              <Image width={64} height={48} preview={false} src={item?.room?.first_image?.link} />
 
               <WrapperInfo>
                 <p>{item?.room_title}</p>

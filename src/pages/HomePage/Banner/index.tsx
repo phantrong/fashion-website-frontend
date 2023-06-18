@@ -292,7 +292,7 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
             onChange={handleChangeSearch}
             value={keyWord}
             onSearch={handleSearch}
-            placeholder="Từ khóa, Đường, Quận, Dự án hoặc địa danh ..."
+            placeholder="Từ khóa, Đường, Quận, Trường học ..."
             enterButton
           />
           <WrapperSelect>
@@ -310,7 +310,8 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
                 value={addressSelectArr?.[0]?.value}
                 options={addressSelectArr}
                 tagRender={tagRender}
-                placeholder="Trên toàn quốc"
+                mode="multiple"
+                placeholder="Địa chỉ"
                 dropdownRender={(menu) => {
                   return <>{renderContentAddress()}</>;
                 }}

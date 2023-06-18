@@ -1,7 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Form, message } from 'antd';
 import { sendContact } from 'api/contact';
 import { FormInstance } from 'antd/lib/form';
+import { getAccessNumber } from 'api';
 
 export const COMMENT_TYPE = 1;
 export const COOPERATION_CONTACT_TYPE = 2;
@@ -24,6 +25,7 @@ const usePageFooter = () => {
   const [modalVisiable, setModalVisiable] = useState<boolean>(false);
   const [modalType, setModalType] = useState<number>(COMMENT_TYPE);
   const [isLoadingSendContact, setIsLoadingSendContact] = useState<boolean>(false);
+  const [accessNumber, setAccessNumber] = useState<number>(0);
 
   const onOpenModal = (type: number) => {
     setModalType(type);
@@ -35,9 +37,22 @@ const usePageFooter = () => {
     form.resetFields();
   }, [form]);
 
+  const featureNotSupport = () => {
+    message.info('Tính năng đang phát triển! Vui lòng thử lại sau.');
+  };
+
   const showMessageError = (type: number) => {
     if (type === COMMENT_TYPE) message.error('Gửi ý kiến đóng góp thất bại. Vui lòng gửi lại sau!');
     if (type === COOPERATION_CONTACT_TYPE) message.error('Gửi liên hệ hợp tác thất bại. Vui lòng gửi lại sau!');
+  };
+
+  const countAccessNumber = async () => {
+    try {
+      const response = await getAccessNumber();
+      setAccessNumber(Number(response?.data?.total || 0));
+    } catch (error) {
+      //
+    }
   };
 
   const onFinishForm = useCallback(
@@ -67,6 +82,11 @@ const usePageFooter = () => {
     [modalType, onCancel]
   );
 
+  useEffect(() => {
+    countAccessNumber();
+    // eslint-disable-next-line
+  }, []);
+
   return {
     form,
     defaultContactValues,
@@ -76,6 +96,8 @@ const usePageFooter = () => {
     onCancel,
     onFinishForm,
     isLoadingSendContact,
+    featureNotSupport,
+    accessNumber,
   };
 };
 

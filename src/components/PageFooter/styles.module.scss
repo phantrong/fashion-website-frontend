@@ -57,3 +57,11 @@
 .textArea textarea {
     resize: none !important;
 }
+
+.accessView {
+    display: flex;
+
+    img {
+        margin-right: 5px;
+    }
+}

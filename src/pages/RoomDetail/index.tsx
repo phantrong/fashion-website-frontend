@@ -118,11 +118,6 @@ const RoomDetail = () => {
                   <span>{room?.total_view_times}</span>
                 </ViewFrame>
               </WrapperRoomInfoItem>
-
-              {/* <WrapperRoomInfoItem>
-      <span>Phòng ngủ</span>
-      <span>3 PN</span>
-    </WrapperRoomInfoItem> */}
             </WrapperRoomInfo>
 
             <Image
@@ -130,6 +125,7 @@ const RoomDetail = () => {
               height={22}
               width={19}
               preview={false}
+              style={{ cursor: 'pointer' }}
               src={isFavorite ? images.icons.HeartRed : images.icons.HeartOutline}
             />
           </WrapperInfo>
@@ -173,22 +169,12 @@ const RoomDetail = () => {
           </Avatar>
           <CreateBy>Được đăng bởi</CreateBy>
           <NameStyle>{room?.admin_name}</NameStyle>
-
-          {/* <ButtonPhone>{room?.admin_phone}</ButtonPhone> */}
           <SpaceStyle padding="5px 0" />
           <Paragraph copyable>{room?.admin_phone}</Paragraph>
-          {/* <SpaceStyle padding='5px 0' /> */}
           <EmailText copyable>
             <div className="email-text">{room?.admin_email}</div>
           </EmailText>
-          {/* <ButtonEmail>{room?.admin_email}</ButtonEmail> */}
-
-          {/* <ButtonEmail>Yêu cầu liên hệ lại</ButtonEmail> */}
         </WrapperInfoUser>
-
-        {/* <WrapperCity>
-          <TitleCity></TitleCity>
-        </WrapperCity> */}
       </WrapperSideBar>
     </WrapperRoomDetail>
   );

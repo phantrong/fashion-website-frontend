@@ -83,3 +83,34 @@ export interface IRoomListResponse {
   medias: IRoomMediaResponse[];
   is_interested: 0 | 1;
 }
+
+export interface IInterestedRoomListResponse {
+  item_id: number;
+  room_id: number;
+  title: string;
+  province_id: number;
+  province_name: string;
+  district_id: number;
+  district_name: string;
+  ward_id: number;
+  ward_name: string;
+  address_detail: string;
+  room_type_id: number;
+  is_negotiate: number;
+  cost: number;
+  acreage: number;
+  status: number;
+  created_at: string;
+  updated_at: string;
+  admin_id: number;
+  admin_name: string;
+  room: {
+    id: number;
+    room_type_id: number;
+    room_type: {
+      id: number;
+      name: string;
+    };
+    medias: IRoomMediaResponse[];
+  };
+}

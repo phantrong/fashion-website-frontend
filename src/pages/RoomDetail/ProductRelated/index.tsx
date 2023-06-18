@@ -40,7 +40,7 @@ const ProductRelated: React.FC<IProductRelatedProps> = ({ roomId }) => {
           list={renderProductItem(rooms)}
         />
       ) : (
-        <></>
+        <>Không có dữ liệu</>
       )}
     </WrapperProductRelated>
   );

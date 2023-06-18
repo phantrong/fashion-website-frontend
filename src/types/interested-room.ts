@@ -15,6 +15,6 @@ export interface IInterestedRoomListResponse {
   room_title: string;
   created_at: number;
   room: {
-    first_image: IRoomMediaResponse[];
+    first_image: IRoomMediaResponse;
   };
 }

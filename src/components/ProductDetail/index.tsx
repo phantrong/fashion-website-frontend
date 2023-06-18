@@ -94,6 +94,7 @@ const ProductDetail: React.FC<IProductDetailProps> = ({ title, acreage, isLoadin
               height={22}
               width={isFavorite ? 19 : 18}
               preview={false}
+              style={{ cursor: 'pointer' }}
               src={isFavorite ? images.icons.HeartRed : images.icons.HeartOutline}
             />
           </WrapperTime>

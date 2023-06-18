@@ -19,7 +19,7 @@ import {
 import React, { useState } from 'react';
 import images from 'assets';
 import { SpaceStyle } from 'styles/styled';
-import { EActionStore, IRoomListResponse } from 'types';
+import { EActionStore, IInterestedRoomListResponse } from 'types';
 import { calculateDaysToTargetDate, convertNumberToMoney } from 'helper/format';
 import { useNavigate } from 'react-router-dom';
 import { useMyContext } from 'stores';
@@ -27,15 +27,15 @@ import { useSavedRoom } from 'services';
 import ImageError from 'components/ImageError';
 import WrapperLoading from 'components/WrapperLoading';
 
-interface ISearchProductItem extends IRoomListResponse {
-  onSuccessClickSave?: (status: boolean, item: IRoomListResponse) => void;
+interface IInterestedRoomItem extends IInterestedRoomListResponse {
+  onSuccessClickSave?: (status: boolean, item: IInterestedRoomListResponse) => void;
   isLoading?: boolean;
 }
-const SearchProductItem: React.FC<ISearchProductItem> = ({ title, onSuccessClickSave, isLoading, ...props }) => {
+const InterestedRoomItem: React.FC<IInterestedRoomItem> = ({ title, onSuccessClickSave, isLoading, ...props }) => {
   const { myContextValue, dispatch } = useMyContext();
   const navigate = useNavigate();
   const { deleteRoomInterested, saveRoomInterested } = useSavedRoom();
-  const [isFavorite, setIsFavorite] = useState<boolean>(!!props?.is_interested);
+  const [isFavorite, setIsFavorite] = useState<boolean>(true);
   const clickTitle = (id: number) => {
     navigate(`/room/detail/${id}`);
   };
@@ -55,10 +55,10 @@ const SearchProductItem: React.FC<ISearchProductItem> = ({ title, onSuccessClick
   const handleAddToSavedRoom = () => {
     const oldValue = myContextValue.isChangeSavedRooms;
 
-    const isSaved = props?.is_interested === 1;
+    const isSaved = 1;
 
     if (isSaved) {
-      deleteRoomInterested(props?.id).then(() => {
+      deleteRoomInterested(props?.room_id).then(() => {
         dispatch({ type: EActionStore.UPDATE_SAVED_ROOM, payload: !oldValue });
         setIsFavorite(!isFavorite);
         onSuccessClickSave?.(!isFavorite, { ...props, title });
@@ -66,7 +66,7 @@ const SearchProductItem: React.FC<ISearchProductItem> = ({ title, onSuccessClick
       return;
     }
 
-    saveRoomInterested(props?.id).then(() => {
+    saveRoomInterested(props?.room_id).then(() => {
       dispatch({ type: EActionStore.UPDATE_SAVED_ROOM, payload: !oldValue });
       setIsFavorite(!isFavorite);
       onSuccessClickSave?.(!isFavorite, { ...props, title });
@@ -75,13 +75,13 @@ const SearchProductItem: React.FC<ISearchProductItem> = ({ title, onSuccessClick
 
   return (
     <WrapperSearchProductItem>
-      <WrapperImages onClick={() => clickTitle(props?.id)}>
+      <WrapperImages onClick={() => clickTitle(props?.room_id)}>
         <MainImage>
-          <ImageError isLoading={isLoading} preview={false} src={props?.medias?.[0]?.link} alt="main" />
+          <ImageError isLoading={isLoading} preview={false} src={props?.room?.medias?.[0]?.link} alt="main" />
         </MainImage>
         <WrapperSubImages>
           <WrapperFirstSubImage>
-            <ImageError isLoading={isLoading} preview={false} src={props?.medias?.[1]?.link} alt="main" />
+            <ImageError isLoading={isLoading} preview={false} src={props?.room?.medias?.[1]?.link} alt="main" />
           </WrapperFirstSubImage>
 
           <WrapperSecondSubImage className="d-flex">
@@ -89,7 +89,7 @@ const SearchProductItem: React.FC<ISearchProductItem> = ({ title, onSuccessClick
               <ImageError
                 isLoading={isLoading}
                 preview={false}
-                src={props?.medias?.[2]?.link || props?.medias?.[0]?.link}
+                src={props?.room?.medias?.[2]?.link || props?.room?.medias?.[0]?.link}
                 alt="main"
               />
             </SubImage>
@@ -97,7 +97,7 @@ const SearchProductItem: React.FC<ISearchProductItem> = ({ title, onSuccessClick
               <ImageError
                 isLoading={isLoading}
                 preview={false}
-                src={props?.medias?.[3]?.link || props?.medias?.[1]?.link}
+                src={props?.room?.medias?.[3]?.link || props?.room?.medias?.[1]?.link}
                 alt="main"
               />
             </SubImage>
@@ -107,7 +107,7 @@ const SearchProductItem: React.FC<ISearchProductItem> = ({ title, onSuccessClick
 
       <WrapperLoading isLoading={isLoading || false}>
         <WrapperContent>
-          <TitleContent onClick={() => clickTitle(props?.id)}>{title?.toLocaleUpperCase()}</TitleContent>
+          <TitleContent onClick={() => clickTitle(props?.room_id)}>{title?.toLocaleUpperCase()}</TitleContent>
 
           <SpaceStyle padding="5px" />
           <WrapperMoney>
@@ -145,4 +145,4 @@ const SearchProductItem: React.FC<ISearchProductItem> = ({ title, onSuccessClick
   );
 };
 
-export default SearchProductItem;
+export default InterestedRoomItem;

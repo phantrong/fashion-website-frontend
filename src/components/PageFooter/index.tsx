@@ -11,6 +11,7 @@ import { Layout, Row, Col, Typography, Modal, Form, Input } from 'antd';
 import usePageFooter, { COMMENT_TYPE, COOPERATION_CONTACT_TYPE } from './usePageFooter';
 import { REGEX_EMAIL } from 'helper/regex';
 import TextArea from 'antd/lib/input/TextArea';
+import images from 'assets';
 
 const { Footer } = Layout;
 const { Title, Text } = Typography;
@@ -25,6 +26,8 @@ const PageFooter = () => {
     onCancel,
     onFinishForm,
     isLoadingSendContact,
+    featureNotSupport,
+    accessNumber,
   } = usePageFooter();
 
   return (
@@ -45,7 +48,7 @@ const PageFooter = () => {
               <img src={hotlineIcon} className={styles.iconContact} alt="hotline" />
               <div className={styles.info}>
                 <Text className={styles.label}>Hotline:</Text>
-                <Text strong>091 753 7671</Text>
+                <Text strong>0968 724 069</Text>
               </div>
             </div>
             <br />
@@ -68,19 +71,10 @@ const PageFooter = () => {
               >
                 <img src={facebookIcon} className={styles.iconContact} alt="facebook" />
               </a>
-              <a href="https://zalo.me/2606322533378009715" target="_blank" rel="noopener noreferrer">
+              <a href="https://zalo.me/0968724069" target="_blank" rel="noopener noreferrer">
                 <img src={zaloIcon} className={styles.iconContact} alt="zalo" />
               </a>
             </div>
-          </div>
-        </Col>
-        <Col xs={24} sm={24} md={6}>
-          <div className={styles.links}>
-            <Text strong>HƯỚNG DẪN:</Text>
-            <Text className={styles.link}>Hướng dẫn sử dụng</Text>
-            <Text className={styles.link}>Câu hỏi thường gặp</Text>
-            <Text className={styles.link}>Thông báo</Text>
-            <Text className={styles.link}>Sitemap</Text>
           </div>
         </Col>
         <Col xs={24} sm={24} md={6}>
@@ -91,6 +85,29 @@ const PageFooter = () => {
             </div>
             <div className={styles.link} onClick={() => onOpenModal(COOPERATION_CONTACT_TYPE)}>
               Liên hệ hợp tác
+            </div>
+            <br />
+            <Text strong>Lượt truy cập:</Text>
+            <div className={styles.accessView}>
+              <img width={20} height={20} src={images.icons.EyesImage} alt="view" />
+              <Text strong>{accessNumber}</Text>
+            </div>
+          </div>
+        </Col>
+        <Col xs={24} sm={24} md={6}>
+          <div className={styles.links}>
+            <Text strong>HƯỚNG DẪN:</Text>
+            <div className={styles.link} onClick={featureNotSupport}>
+              Hướng dẫn sử dụng
+            </div>
+            <div className={styles.link} onClick={featureNotSupport}>
+              Câu hỏi thường gặp
+            </div>
+            <div className={styles.link} onClick={featureNotSupport}>
+              Thông báo
+            </div>
+            <div className={styles.link} onClick={featureNotSupport}>
+              Sitemap
             </div>
           </div>
         </Col>

@@ -66,14 +66,6 @@ export default function PageHeader() {
     },
   ];
 
-  // const anonymousRoutes = [
-  //   {
-  //     key: '3',
-  //     text: 'Đăng nhập',
-  //     url: '/login',
-  //   },
-  // ];
-
   const handleLogout = () => {
     logout();
     setTimeout(() => {
@@ -162,7 +154,6 @@ export default function PageHeader() {
           >
             Đăng ký
           </ButtonCustom>
-          {/* <ButtonCustom style={{ border: 'solid 1px #ccc', background: 'transparent', padding: '13px 15px' }}>Đăng tin</ButtonCustom> */}
         </WrapperAction>
 
         {profile && !isLoadingProfile && (
