@@ -69,7 +69,9 @@ const MainContentHome = () => {
     return new Array(4).fill(0).map((item: any, index: number) => {
       return (
         <SubIntroduceItem key={index}>
-          <WrapperLoading isLoading={loading.isLoadingP}></WrapperLoading>
+          <WrapperLoading isLoading={loading.isLoadingP}>
+            <></>
+          </WrapperLoading>
         </SubIntroduceItem>
       );
     });
