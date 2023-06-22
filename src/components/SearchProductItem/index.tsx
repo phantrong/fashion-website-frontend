@@ -75,23 +75,13 @@ const SearchProductItem: React.FC<ISearchProductItem> = ({ title, onSuccessClick
 
   return (
     <WrapperSearchProductItem>
-      <WrapperImages>
+      <WrapperImages onClick={() => clickTitle(props?.id)}>
         <MainImage>
-          <ImageError
-            isLoading={isLoading}
-            preview={false}
-            src="https://file4.batdongsan.com.vn/crop/846x423/2023/05/31/20230531111345-c74d_wm.jpg"
-            alt="main"
-          />
+          <ImageError isLoading={isLoading} preview={false} src={props?.medias?.[0]?.link} alt="main" />
         </MainImage>
         <WrapperSubImages>
           <WrapperFirstSubImage>
-            <ImageError
-              isLoading={isLoading}
-              preview={false}
-              src="https://file4.batdongsan.com.vn/crop/846x423/2023/05/31/20230531111345-c74d_wm.jpg"
-              alt="main"
-            />
+            <ImageError isLoading={isLoading} preview={false} src={props?.medias?.[1]?.link} alt="main" />
           </WrapperFirstSubImage>
 
           <WrapperSecondSubImage className="d-flex">
@@ -99,7 +89,7 @@ const SearchProductItem: React.FC<ISearchProductItem> = ({ title, onSuccessClick
               <ImageError
                 isLoading={isLoading}
                 preview={false}
-                src="https://file4.batdongsan.com.vn/crop/846x423/2023/05/31/20230531111345-c74d_wm.jpg"
+                src={props?.medias?.[2]?.link || props?.medias?.[0]?.link}
                 alt="main"
               />
             </SubImage>
@@ -107,7 +97,7 @@ const SearchProductItem: React.FC<ISearchProductItem> = ({ title, onSuccessClick
               <ImageError
                 isLoading={isLoading}
                 preview={false}
-                src="https://file4.batdongsan.com.vn/crop/846x423/2023/05/31/20230531111345-c74d_wm.jpg"
+                src={props?.medias?.[3]?.link || props?.medias?.[1]?.link}
                 alt="main"
               />
             </SubImage>

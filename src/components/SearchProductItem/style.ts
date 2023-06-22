@@ -15,6 +15,7 @@ const WrapperImages = styled.div`
   align-items: flex-start;
   margin-left: -4px;
   margin-right: -4px;
+  cursor: pointer;
 `;
 
 const MainImage = styled.div`

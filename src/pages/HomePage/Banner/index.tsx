@@ -146,7 +146,7 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
     >
       <Option value={0}>Tất cả</Option>
       {myContextValue.roomTypes.map((item: IRoomTypeResponse) => (
-        <Option title={item?.name} value={item?.id}>
+        <Option key={item?.id} title={item?.name} value={item?.id}>
           {item?.name}
         </Option>
       ))}
@@ -296,7 +296,7 @@ const BannerHome: React.FC<IBannerHomeProps> = ({ onListenQueries }) => {
             enterButton
           />
           <WrapperSelect>
-            <WrapperItem maxWidth="calc((100% - 40px) / 3)">
+            <WrapperItem maxwidth={'calc((100% - 40px) / 3)'}>
               <SelectAddress
                 className="address-select"
                 open={isOpenAddress}

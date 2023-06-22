@@ -12,6 +12,7 @@ const WrapperImage = styled.div`
   position: relative;
   border-radius: 5px 5px 0 0;
   height: 127px;
+  cursor: pointer;
   .image-error-component {
     height: 100%;
     width: 100%;
@@ -41,10 +42,12 @@ const TittleStyle = styled.h3`
   overflow: hidden;
   text-overflow: ellipsis;
   min-height: 40px;
+  cursor: pointer;
 `;
 
 const WrapperInfo = styled.div`
   gap: 20px;
+  cursor: auto;
 `;
 
 const InfoText = styled.div`

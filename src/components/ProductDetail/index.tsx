@@ -1,4 +1,4 @@
-import { Image, Skeleton } from 'antd';
+import { Image } from 'antd';
 import {
   InfoText,
   TextAddress,
@@ -56,7 +56,7 @@ const ProductDetail: React.FC<IProductDetailProps> = ({ title, acreage, isLoadin
 
   return (
     <WrapperProductDetail className="d-flex flex-column">
-      <WrapperImage>
+      <WrapperImage onClick={() => clickTitle(props?.id)}>
         <ImageError
           isLoading={isLoading}
           preview={false}

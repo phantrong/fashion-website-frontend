@@ -1,4 +1,5 @@
 import { Button } from 'antd';
+import Paragraph from 'antd/lib/typography/Paragraph';
 import { MIN_WIDTH } from 'constants/common';
 import { styled } from 'styled-components';
 
@@ -88,6 +89,12 @@ const WrapperRoomInfoItem = styled.div`
   }
 `;
 
+const ViewFrame = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
 const WrapperDescription = styled.div``;
 
 const DescriptionTitle = styled.span`
@@ -144,7 +151,23 @@ const WrapperInfoUser = styled.div`
     font-weight: bold;
   }
 `;
-
+const EmailText = styled(Paragraph)`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  .email-text {
+    display: block;
+    display: -webkit-box;
+    max-width: 100%;
+    margin: 0 auto;
+    font-size: 14px;
+    line-height: 1;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`;
 const NameStyle = styled.div`
   font-size: 16px;
   line-height: 24px;
@@ -240,4 +263,6 @@ export {
   TitleCity,
   WrapperDetailSwiper,
   ProductSuggestDetail,
+  ViewFrame,
+  EmailText,
 };

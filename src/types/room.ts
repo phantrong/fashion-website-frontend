@@ -39,6 +39,10 @@ export interface IRoomHouseWare {
 
 export interface IRoomDetailResponse extends IRoomListResponse {
   housewares: IRoomHouseWare[];
+  admin_phone: string;
+  total_view_times: number;
+  admin_email: string;
+  more_description: string;
 }
 
 export interface IRoomMediaResponse {

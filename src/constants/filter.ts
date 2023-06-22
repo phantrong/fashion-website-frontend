@@ -47,7 +47,7 @@ export const COSTS: IFilterData[] = [
   },
   {
     value: {
-      start_cost: 10,
+      start_cost: 10000,
     },
     label: 'trên 10 triệu',
   },

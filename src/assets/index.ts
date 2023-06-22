@@ -9,6 +9,7 @@ import CloseIcon from 'assets/icons/close.svg';
 import SyncIcon from 'assets/icons/sync.svg';
 import SyncWhiteIcon from 'assets/icons/sync-white.svg';
 import DefaultImage from 'assets/icons/default.svg';
+import EyesImage from 'assets/icons/eyes.svg';
 
 const icons = {
   LocationIcon,
@@ -22,6 +23,7 @@ const icons = {
   SyncIcon,
   SyncWhiteIcon,
   DefaultImage,
+  EyesImage,
 };
 
 const images = {

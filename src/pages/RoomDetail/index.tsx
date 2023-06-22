@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import {
   AddressText,
-  ButtonEmail,
-  ButtonPhone,
   CreateBy,
   DescriptionTitle,
+  EmailText,
   HouseWareItem,
   NameStyle,
   ProductSuggestDetail,
-  TitleCity,
   TitleHouseWare,
   TitleStyle,
+  ViewFrame,
   WrapperBody,
-  WrapperCity,
   WrapperDescription,
   WrapperDetailSwiper,
   WrapperHouseWare,
@@ -36,6 +34,8 @@ import ProductRelated from './ProductRelated';
 import { SpaceStyle } from 'styles/styled';
 import { useMyContext } from 'stores';
 import WrapperLoading from 'components/WrapperLoading';
+import ImageError from 'components/ImageError';
+import Paragraph from 'antd/lib/typography/Paragraph';
 const RoomDetail = () => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const param = useParams();
@@ -80,8 +80,9 @@ const RoomDetail = () => {
 
   useEffect(() => {
     handleGetDetailRoom();
+    window.scrollTo(0, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [(param as any)?.id]);
 
   return (
     <WrapperRoomDetail>
@@ -110,6 +111,14 @@ const RoomDetail = () => {
                 <span>{room?.acreage} m²</span>
               </WrapperRoomInfoItem>
 
+              <WrapperRoomInfoItem>
+                <span>Lượt xem</span>
+                <ViewFrame>
+                  <ImageError width={20} height={20} preview={false} src={images.icons.EyesImage} />
+                  <span>{room?.total_view_times}</span>
+                </ViewFrame>
+              </WrapperRoomInfoItem>
+
               {/* <WrapperRoomInfoItem>
       <span>Phòng ngủ</span>
       <span>3 PN</span>
@@ -129,13 +138,7 @@ const RoomDetail = () => {
         <WrapperLoading isLoading={isLoading}>
           <WrapperDescription>
             <DescriptionTitle>Thông tin mô tả</DescriptionTitle>
-            <p>34m² - 2 tầng - hẻm 5m.</p>
-
-            <p>Lê Quang Định - P5 - Bình Thạnh.</p>
-
-            <p>Nhà 3 phòng ngủ, 3 toilet, hẻm dân trí, an.</p>
-            <p> Ninh, cách mặt tiền chỉ 25m, pháp lý chuẩn.</p>
-            <p> Không lộ giới, hoàn công đầy đủ.</p>
+            <p>{room?.more_description}</p>
           </WrapperDescription>
         </WrapperLoading>
 
@@ -171,16 +174,21 @@ const RoomDetail = () => {
           <CreateBy>Được đăng bởi</CreateBy>
           <NameStyle>{room?.admin_name}</NameStyle>
 
-          <ButtonPhone>0327440698. Hiện số</ButtonPhone>
+          {/* <ButtonPhone>{room?.admin_phone}</ButtonPhone> */}
+          <SpaceStyle padding="5px 0" />
+          <Paragraph copyable>{room?.admin_phone}</Paragraph>
+          {/* <SpaceStyle padding='5px 0' /> */}
+          <EmailText copyable>
+            <div className="email-text">{room?.admin_email}</div>
+          </EmailText>
+          {/* <ButtonEmail>{room?.admin_email}</ButtonEmail> */}
 
-          <ButtonEmail>Gửi email</ButtonEmail>
-
-          <ButtonEmail>Yêu cầu liên hệ lại</ButtonEmail>
+          {/* <ButtonEmail>Yêu cầu liên hệ lại</ButtonEmail> */}
         </WrapperInfoUser>
 
-        <WrapperCity>
+        {/* <WrapperCity>
           <TitleCity></TitleCity>
-        </WrapperCity>
+        </WrapperCity> */}
       </WrapperSideBar>
     </WrapperRoomDetail>
   );

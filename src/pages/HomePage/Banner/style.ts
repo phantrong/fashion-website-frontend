@@ -59,9 +59,9 @@ const WrapperSelect = styled.div`
   gap: 10px;
 `;
 
-const WrapperItem = styled.div<{ maxWidth?: string }>`
+const WrapperItem = styled.div<{ maxwidth?: string }>`
   flex: 1;
-  max-width: ${(props) => props?.maxWidth || 'unset'};
+  max-width: ${(props) => props?.maxwidth || 'unset'};
   .ant-select {
     width: 100%;
     .ant-select-selector {

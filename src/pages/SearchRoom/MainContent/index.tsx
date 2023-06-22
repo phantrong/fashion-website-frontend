@@ -7,7 +7,7 @@ import {
   WrapperSeeMore,
   WrapperSideBar,
 } from './style';
-import React, { useState } from 'react';
+import React from 'react';
 import { SpaceStyle } from 'styles/styled';
 import SearchProductItem from 'components/SearchProductItem';
 import {
@@ -20,7 +20,6 @@ import {
 import images from 'assets';
 import { ERoomStatusSort, IRoomListResponse } from 'types';
 import { AREAS, COSTS, IFilterData } from 'constants/filter';
-import ButtonCustom from 'components/Button';
 
 const search = [
   {

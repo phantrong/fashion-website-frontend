@@ -36,7 +36,6 @@ const WrapperSeeMore = styled.div`
 
 const WrapperDetailItem = styled.div`
   flex: 0 0 25%;
-  cursor: pointer;
   padding: 15px;
 `;
 

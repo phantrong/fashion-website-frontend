@@ -1,5 +1,5 @@
 const convertNumberToMoney = (money: number) => {
-  const million = money / 1000000;
+  const million = money / 1000;
   const millionString = million.toFixed(1).toString();
   if (millionString.endsWith('.0')) {
     return millionString.slice(0, -2);

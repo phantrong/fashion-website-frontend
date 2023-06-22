@@ -28,7 +28,7 @@ const ProductRelated: React.FC<IProductRelatedProps> = ({ roomId }) => {
   useEffect(() => {
     handleGetRoomsRelated();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [roomId]);
   return (
     <WrapperProductRelated>
       {renderProductItem(rooms).length > 0 ? (
