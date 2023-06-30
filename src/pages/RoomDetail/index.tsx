@@ -95,7 +95,12 @@ const RoomDetail = () => {
         <WrapperLoading isLoading={isLoading}>
           <TitleStyle>{room?.title}</TitleStyle>
 
-          <AddressText>{room?.address_detail}</AddressText>
+          <AddressText>
+            Địa chỉ:{' '}
+            {`${room?.province_name || ''}, ${room?.district_name || ''}, ${room?.ward_name || ''}, ${
+              room?.address_detail || ''
+            }`}
+          </AddressText>
 
           <WrapperInfo>
             <WrapperRoomInfo>
@@ -134,7 +139,7 @@ const RoomDetail = () => {
         <WrapperLoading isLoading={isLoading}>
           <WrapperDescription>
             <DescriptionTitle>Thông tin mô tả</DescriptionTitle>
-            <p>{room?.more_description}</p>
+            <pre>{room?.more_description}</pre>
           </WrapperDescription>
         </WrapperLoading>
 

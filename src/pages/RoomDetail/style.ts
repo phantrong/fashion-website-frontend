@@ -41,7 +41,7 @@ const TitleStyle = styled.h1`
 const AddressText = styled.div`
   font-size: 14px;
   line-height: 20px;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
   color: #2c2c2c;
   display: block;
   margin-top: 8px;
